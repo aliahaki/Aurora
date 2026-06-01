@@ -1,0 +1,532 @@
+/* ==========================================================================
+   1. VARIABELEN & BASIS
+   ========================================================================== */
+:root {
+    --deep-purple: #14141f;
+    --accent-purple: #6c5ce7;
+    --button-blue: #5d6cf3;
+    --bg-light: #f6f6f9;
+    --gold: #f1c40f;
+    --white: #ffffff;
+    --text-dark: #14141f;
+    --text-muted: #57606f;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--white);
+    color: var(--text-dark);
+    overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: 'Playfair Display', serif;
+}
+
+/* ==========================================================================
+   2. NAVBAR DESKTOP
+   ========================================================================== */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 8%;
+    background-color: var(--deep-purple);
+    color: var(--white);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.logo-icon {
+    background-color: var(--accent-purple);
+    padding: 4px 9px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: #a4b0be;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--white);
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.nav-buttons button {
+    padding: 9px 22px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-login {
+    background-color: var(--accent-purple);
+    color: var(--white);
+}
+
+.btn-register {
+    background-color: var(--button-blue);
+    color: var(--white);
+}
+
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.menu-toggle .bar {
+    width: 100%;
+    height: 3px;
+    background-color: var(--white);
+    border-radius: 2px;
+    transition: 0.3s;
+}
+
+/* ==========================================================================
+   3. HERO (3 Foto's Collage)
+   ========================================================================== */
+.hero-container {
+    position: relative;
+    height: 75vh;
+    background-color: var(--deep-purple);
+}
+
+.hero-images-grid {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.hero-img-box {
+    flex: 1;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    transition: 0.5s;
+}
+
+.pic-1 {
+    background-image: url('https://images.unsplash.com/photo-1503095396549-807759245b35?q=80&w=600');
+}
+
+.pic-2 {
+    background-image: url('https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?q=80&w=600');
+}
+
+.pic-3 {
+    background-image: url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=600');
+}
+
+.hero-img-box:hover {
+    transform: scale(1.02);
+}
+
+.hero-text-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(20, 20, 31, 0.5), rgba(20, 20, 31, 0.8));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+.hero-content h1 {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.hero-content p {
+    font-size: 20px;
+    margin-bottom: 35px;
+    color: #f1f2f6;
+}
+
+.btn-tickets {
+    background-color: var(--accent-purple);
+    color: white;
+    padding: 16px 40px;
+    border: none;
+    border-radius: 35px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(108, 92, 231, 0.4);
+}
+
+/* ==========================================================================
+   4. INFORMATIE SECTIE
+   ========================================================================== */
+.info-section {
+    padding: 90px 8%;
+}
+
+.container {
+    display: flex;
+    gap: 60px;
+    align-items: center;
+}
+
+.info-text {
+    flex: 1;
+    min-width: 350px;
+}
+
+.section-tag {
+    color: var(--accent-purple);
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.info-text h2 {
+    font-size: 42px;
+    margin-bottom: 25px;
+}
+
+.info-text p {
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.btn-more {
+    background-color: var(--deep-purple);
+    color: var(--white);
+    padding: 13px 30px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-more:hover {
+    background-color: var(--accent-purple);
+}
+
+.info-image {
+    flex: 1;
+    min-width: 350px;
+    height: 450px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+}
+
+.main-info-pic {
+    background-image: url('https://images.unsplash.com/photo-1514306191717-452ec28c7814?q=80&w=600');
+}
+
+/* ==========================================================================
+   5. EXTRA FOTO GALERIJ (3 NIEUWE FOTO'S)
+   ========================================================================== */
+.gallery-section {
+    padding: 60px 8% 90px 8%;
+    background-color: var(--white);
+}
+
+.gallery-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.gallery-header h2 {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.gallery-header p {
+    color: var(--text-muted);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.gallery-item {
+    height: 280px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+}
+
+/* URLs voor de nieuwe extra foto's */
+.gal-1 {
+    background-image: url('https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?q=80&w=600');
+}
+
+/* Muzikant / Saxofoon */
+.gal-2 {
+    background-image: url('https://images.unsplash.com/photo-1465847899084-d164df4dedc6?q=80&w=600');
+}
+
+/* Gekleurde lichten podium */
+.gal-3 {
+    background-image: url('https://images.unsplash.com/photo-1505686994434-e3cc5abf1330?q=80&w=600');
+}
+
+/* Gordijnen / Rode zaal */
+
+/* ==========================================================================
+   6. REVIEWS SECTIE
+   ========================================================================== */
+.reviews-section {
+    padding: 90px 8%;
+    text-align: center;
+    background-color: var(--bg-light);
+}
+
+.reviews-section h2 {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.review-card {
+    background: var(--white);
+    padding: 35px;
+    border-radius: 16px;
+    text-align: left;
+    border-top: 4px solid var(--accent-purple);
+    box-shadow: var(--shadow);
+}
+
+.stars {
+    color: var(--gold);
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.review-text {
+    color: var(--text-dark);
+    font-style: italic;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+.review-author strong {
+    display: block;
+    font-size: 16px;
+}
+
+.review-author span {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   7. FOOTER SECTIE
+   ========================================================================== */
+.main-footer {
+    background-color: var(--deep-purple);
+    color: #a4b0be;
+    padding: 70px 8% 25px 8%;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #2f3542;
+}
+
+.footer-brand,
+.footer-contact,
+.footer-hours {
+    flex: 1;
+    min-width: 250px;
+}
+
+.footer-container h3,
+.footer-container h4 {
+    color: var(--white);
+    margin-bottom: 20px;
+}
+
+.footer-container p {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 25px;
+    font-size: 13px;
+    color: #747d8c;
+}
+
+/* ==========================================================================
+   8. RESPONSIVE DESIGN (MOBIEL & TABLET FIXES)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 15px 5%;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    /* Menu klapt verticaal open */
+    .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--deep-purple);
+        flex-direction: column;
+        padding: 35px 0;
+        gap: 25px;
+        opacity: 0;
+        transform: translateY(-20px);
+        pointer-events: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .nav-menu.active {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    /* Knoppen netjes onder elkaar */
+    .nav-buttons {
+        flex-direction: column;
+        gap: 12px;
+        width: 85%;
+    }
+
+    .nav-buttons button {
+        width: 100%;
+        margin: 0;
+        padding: 12px 0;
+    }
+
+    /* Hero mobiel (Toont 1 sfeerfoto) */
+    .pic-2,
+    .pic-3 {
+        display: none;
+    }
+
+    .hero-container {
+        height: 65vh;
+    }
+
+    .hero-content h1 {
+        font-size: 36px;
+    }
+
+    /* Alles onder elkaar op mobiel */
+    .container {
+        flex-direction: column;
+    }
+
+    .info-text,
+    .info-image {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .info-image {
+        height: 250px;
+        order: 2;
+    }
+
+    .info-text h2,
+    .reviews-section h2,
+    .gallery-header h2 {
+        font-size: 30px;
+    }
+
+    .info-section,
+    .reviews-section,
+    .gallery-section {
+        padding: 50px 5%;
+    }
+
+    /* Hamburger animatie naar 'X' */
+    .menu-toggle.active .bar:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+    }
+
+    .menu-toggle.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle.active .bar:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+}
