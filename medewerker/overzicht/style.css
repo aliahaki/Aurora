@@ -1,0 +1,164 @@
+/* SIMPELE CSS - Aurora Theater */
+
+* {
+    margin: 1;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5efe9;
+    padding: 30px 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0e4d8;
+}
+
+.header h1 {
+    color: #7a4c2c;
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+
+.header p {
+    color: #b69874;
+    font-size: 16px;
+}
+
+/* Zoek sectie */
+.zoek-section {
+    margin-bottom: 25px;
+}
+
+.zoek-form {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.zoek-form input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 16px;
+}
+
+.zoek-form button {
+    background: #7a4c2c;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.zoek-form button:hover {
+    background: #9b623b;
+}
+
+.wis-knop {
+    background: #b87c4f;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    display: inline-block;
+}
+
+.wis-knop:hover {
+    background: #9b623b;
+}
+
+/* Tabel */
+.tabel-container {
+    overflow-x: auto;
+    margin-bottom: 25px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #7a4c2c;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+    background: #faf5f0;
+}
+
+.geen-data {
+    text-align: center;
+    padding: 40px;
+    color: #aa8c6e;
+}
+
+/* Statistiek */
+.stats {
+    background: #f7ede4;
+    padding: 12px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.stats p {
+    color: #5a4534;
+    font-size: 15px;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding-top: 15px;
+    border-top: 1px solid #f0e4d8;
+    color: #aa8c6e;
+    font-size: 13px;
+}
+
+/* Responsive - voor telefoons */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+    
+    .header h1 {
+        font-size: 24px;
+    }
+    
+    th, td {
+        padding: 8px;
+        font-size: 14px;
+    }
+    
+    .zoek-form button, .wis-knop {
+        padding: 8px 15px;
+    }
+}
