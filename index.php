@@ -1,3 +1,24 @@
+<?php
+// ==========================================================================
+// DATABASE INSTELLINGEN VOOR WAMP
+// ==========================================================================
+$host = '127.0.0.1';        // Localhost IP voor WAMP
+$dbname = 'aurora_theater'; // aangemaakte database
+$username = 'root';         // Standaard WAMP gebruikersnaam
+$password = '';             // Standaard WAMP wachtwoord (leeg)
+
+$systeemFout = false;       // Standaard staat de fout uit (Happy Scenario)
+
+try {
+    // Probeer verbinding te maken met de MySQL database via PDO
+    $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    // Foutmeldingen aanzetten voor debugging
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    // Als de database offline is of niet bestaat: Unhappy Scenario wordt actief!
+    $systeemFout = true;
+}
+?>
 <!DOCTYPE html>
 <html lang="nl">
 
@@ -5,13 +26,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aurora Theater - Home</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+
+    <div class="error-banner <?php echo $systeemFout ? 'active' : ''; ?>" id="error-message">
+        De pagina kan momenteel niet geladen worden. Probeer het later opnieuw.
+    </div>
 
     <header>
         <nav class="navbar">
@@ -61,12 +84,8 @@
             <div class="info-text">
                 <span class="section-tag">Pure Magie</span>
                 <h2>Een Onvergetelijke Avond Uit</h2>
-                <p>Al meer dan 25 jaar is Aurora Theater het culturele hart van Amsterdam. Stap binnen in onze
-                    historische zaal en laat je meeslepen door adembenemende verhalen, prachtige live muziek en intieme
-                    cabaretvoorstellingen.</p>
-                <p>Van grootschalige moderne concerten tot klassieke toneelstukken van topniveau; bij ons zit je altijd
-                    bovenop de actie. Wij geloven dat theater je moet raken, verrassen en inspireren. Kom langs en
-                    geniet van een compleet verzorgde avond uit met heerlijke hapjes en drankjes.</p>
+                <p>Al meer dan 25 jaar is Aurora Theater het culturele hart van Amsterdam. Stap binnen in onze historische zaal en laat je meeslepen door adembenemende verhalen, prachtige live muziek en intieme cabaretvoorstellingen.</p>
+                <p>Van grootschalige moderne concerten tot klassieke toneelstukken van topniveau; bij ons zit je altijd bovenop de actie. Wij geloven dat theater je moet raken, verrassen en inspireren. Kom langs en geniet van een compleet verzorgde avond uit met heerlijke hapjes en drankjes.</p>
                 <button class="btn-more">Ontdek Onze Geschiedenis</button>
             </div>
             <div class="info-image main-info-pic"></div>
@@ -91,20 +110,17 @@
         <div class="reviews-grid">
             <div class="review-card">
                 <div class="stars">★★★★★</div>
-                <p class="review-text">"Wat een magische plek! De akoestiek in de grote zaal is werkelijk geweldig en de
-                    stoelen zitten heerlijk."</p>
+                <p class="review-text">"Wat een magische plek! De akoestiek in de grote zaal is werkelijk geweldig en de stoelen zitten heerlijk."</p>
                 <div class="review-author"><strong>Marjolein de Vries</strong><span>Bezoeker</span></div>
             </div>
             <div class="review-card">
                 <div class="stars">★★★★★</div>
-                <p class="review-text">"De sfeer in de zaal is zo intiem. Je bent echt verbonden met de acteurs op het
-                    podium. Prachtig historisch gebouw!"</p>
+                <p class="review-text">"De sfeer in de zaal is zo intiem. Je bent echt verbonden met de acteurs op het podium. Prachtig historisch gebouw!"</p>
                 <div class="review-author"><strong>Michael S.</strong><span>Trouwe Fan</span></div>
             </div>
             <div class="review-card">
                 <div class="stars">★★★★☆</div>
-                <p class="review-text">"Heerlijke avond gehad bij de Jazz Night. Drankjes zijn goed geregeld en het
-                    personeel is ontzettend vriendelijk."</p>
+                <p class="review-text">"Heerlijke avond gehad bij de Jazz Night. Drankjes zijn goed geregeld und het personeel is ontzettend vriendelijk."</p>
                 <div class="review-author"><strong>Sarah J.</strong><span>Bezoeker</span></div>
             </div>
         </div>

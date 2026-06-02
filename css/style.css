@@ -1,4 +1,43 @@
 /* ==========================================================================
+   0. UNHAPPY SCENARIO (FOUTMELDING BANNER)
+   ========================================================================== */
+/* ==========================================================================
+   0. UNHAPPY SCENARIO (FOUTMELDING BANNER)
+   ========================================================================== */
+.error-banner {
+    display: none;
+    background-color: #ff4d4d;
+    color: #ffffff;
+    text-align: center;
+    padding: 15px 20px;
+    font-weight: 600;
+    font-size: 15px;
+    position: relative;
+    /* Veranderd van fixed naar relative */
+    width: 100%;
+    z-index: 2000;
+    box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3);
+}
+
+/* Zorg dat de banner getoond wordt als PHP de klasse 'active' meegeeft */
+.error-banner.active {
+    display: block;
+}
+
+/* Zorg dat de navbar netjes meezakt onder de rode balk op desktop */
+.error-banner.active+header .navbar {
+    top: 51px;
+}
+
+@media (max-width: 768px) {
+
+    /* Aanpassing voor mobiele schermen zodat het niet overlapt */
+    .error-banner.active+header .navbar {
+        top: 73px;
+    }
+}
+
+/* ==========================================================================
    1. VARIABELEN & BASIS
    ========================================================================== */
 :root {
@@ -42,10 +81,13 @@ h4 {
     align-items: center;
     padding: 18px 8%;
     background-color: var(--deep-purple);
+    /* Zorgt dat de balk niet transparant is */
     color: var(--white);
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 1500;
+    /* Dit zorgt ervoor dat de balk ALTIJD bovenop de foto's blijft liggen */
+    transition: top 0.3s ease;
 }
 
 .logo {
@@ -309,22 +351,17 @@ h4 {
     transform: translateY(-5px);
 }
 
-/* URLs voor de nieuwe extra foto's */
 .gal-1 {
     background-image: url('https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?q=80&w=600');
 }
 
-/* Muzikant / Saxofoon */
 .gal-2 {
     background-image: url('https://images.unsplash.com/photo-1465847899084-d164df4dedc6?q=80&w=600');
 }
 
-/* Gekleurde lichten podium */
 .gal-3 {
     background-image: url('https://images.unsplash.com/photo-1505686994434-e3cc5abf1330?q=80&w=600');
 }
-
-/* Gordijnen / Rode zaal */
 
 /* ==========================================================================
    6. REVIEWS SECTIE
@@ -434,7 +471,6 @@ h4 {
         display: flex;
     }
 
-    /* Menu klapt verticaal open */
     .nav-menu {
         position: absolute;
         top: 100%;
@@ -462,7 +498,6 @@ h4 {
         gap: 20px;
     }
 
-    /* Knoppen netjes onder elkaar */
     .nav-buttons {
         flex-direction: column;
         gap: 12px;
@@ -475,7 +510,6 @@ h4 {
         padding: 12px 0;
     }
 
-    /* Hero mobiel (Toont 1 sfeerfoto) */
     .pic-2,
     .pic-3 {
         display: none;
@@ -489,7 +523,6 @@ h4 {
         font-size: 36px;
     }
 
-    /* Alles onder elkaar op mobiel */
     .container {
         flex-direction: column;
     }
@@ -517,7 +550,6 @@ h4 {
         padding: 50px 5%;
     }
 
-    /* Hamburger animatie naar 'X' */
     .menu-toggle.active .bar:nth-child(1) {
         transform: translateY(9px) rotate(45deg);
     }
