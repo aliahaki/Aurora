@@ -50,13 +50,15 @@ try {
                 <ul class="nav-links">
                     <li><a href="#" class="active">Home</a></li>
                     <li><a href="#">Informatie</a></li>
-                    <li><a href="#">Over Ons</a></li>
+                    <li><a href="meldingen.php">Meldingen</a></li>
                     <li><a href="#">Contact</a></li>
                 </ul>
                 <div class="nav-buttons">
-                    <button class="btn-notifications" id="btn-alerts" aria-label="Meldingen">
-                        🔔 Meldingen
-                    </button>
+                    <a href="meldingen.php" style="text-decoration: none;">
+                        <button class="btn-notifications" id="btn-alerts" aria-label="Meldingen">
+                            🔔 Meldingen
+                        </button>
+                    </a>
                     <button class="btn-login">Login</button>
                     <button class="btn-register">Registreren</button>
                 </div>
