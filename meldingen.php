@@ -40,3 +40,76 @@ try {
     $systeemFout = true;
 }
 ?>
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurora Theater - Meldingen</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body style="background-color: #f8f9fc; margin: 0; font-family: 'Poppins', sans-serif;">
+
+    <div class="error-banner <?php echo $systeemFout ? 'active' : ''; ?>">
+        Meldingen kunnen momenteel niet worden geladen. Probeer het later opnieuw.
+    </div>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo"><span class="logo-icon">★</span>Aurora Theater</div>
+            <ul class="nav-links">
+                <li><a href="index.php">Home</a></li>
+                <li><a href="#">Informatie</a></li>
+                <li><a href="meldingen.php" class="active">Meldingen</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <button class="btn-login">Login</button>
+                <button class="btn-register">Registreren</button>
+            </div>
+        </nav>
+    </header>
+
+    <main style="max-width: 1000px; margin: 0 auto; padding: 40px 20px;">
+        <h1 style="text-align: center; color: #1e272c; font-size: 54px; font-weight: 700; margin-bottom: 50px; letter-spacing: -1px;">Meldingen</h1>
+
+        <div style="margin-bottom: 50px;">
+            <h2 style="font-size: 22px; color: #1e272c; margin-bottom: 25px; font-weight: 600;">Recente Meldingen</h2>
+
+            <?php if (!$systeemFout && !empty($notifications)): ?>
+                <?php foreach ($notifications as $notif):
+                    $typeClass = strtolower($notif['type']);
+                    if ($typeClass == 'waarschuwing') {
+                        $typeClass = 'warning';
+                        $icon = 'fa-bell';
+                    } elseif ($typeClass == 'nieuws') {
+                        $typeClass = 'news';
+                        $icon = 'fa-volume-high';
+                    } else {
+                        $typeClass = 'info';
+                        $icon = 'fa-circle-info';
+                    }
+                ?>
+                    <div class="card-notification <?php echo $typeClass; ?>">
+                        <div class="card-icon-wrapper <?php echo $typeClass; ?>">
+                            <i class="fa-regular <?php echo $icon; ?>"></i>
+                        </div>
+                        <div class="card-body-content">
+                            <div class="card-title-row">
+                                <h3><?php echo htmlspecialchars($notif['title']); ?></h3>
+                                <span class="badge <?php echo $typeClass; ?>"><?php echo htmlspecialchars($notif['type']); ?></span>
+                            </div>
+                            <p class="card-message"><?php echo htmlspecialchars($notif['message']); ?></p>
+                            <span class="card-date"><?php echo date('j mei Y', strtotime($notif['created_at'])); ?></span>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </main>
+
+</body>
+
+</html>
