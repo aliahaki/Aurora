@@ -108,6 +108,7 @@ try {
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
+
         <div class="form-card">
             <h2>Nieuwe Melding Maken</h2>
             <form action="meldingen.php" method="POST">
@@ -124,6 +125,19 @@ try {
                 </div>
 
                 <button type="submit" class="btn-submit-purple">Melding Versturen</button>
+            </form>
+        </div>
+
+        <div class="form-card" style="margin-top: 40px; margin-bottom: 60px;">
+            <h2>Feedback</h2>
+            <p style="color: #6c757d; font-size: 14px; margin-bottom: 20px;">
+                We waarderen uw feedback! Laat ons weten wat u van onze service vindt.
+            </p>
+            <form action="#" method="POST">
+                <div class="form-group">
+                    <textarea rows="4" placeholder="Deel uw feedback met ons..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit-dark">Feedback Verzenden</button>
             </form>
         </div>
     </main>
