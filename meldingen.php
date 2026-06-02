@@ -108,6 +108,24 @@ try {
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
+        <div class="form-card">
+            <h2>Nieuwe Melding Maken</h2>
+            <form action="meldingen.php" method="POST">
+                <input type="hidden" name="action" value="new_notification">
+
+                <div class="form-group">
+                    <label>Titel</label>
+                    <input type="text" name="title" placeholder="Titel van de melding" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Bericht</label>
+                    <textarea name="message" rows="5" placeholder="Uw bericht..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit-purple">Melding Versturen</button>
+            </form>
+        </div>
     </main>
 
 </body>
