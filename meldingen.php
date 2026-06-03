@@ -1,7 +1,7 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
+// ==========================================================================
+// DATABASE INSTELLINGEN VOOR WAMP
+// ==========================================================================
 $host = '127.0.0.1';
 $dbname = 'aurora_theater';
 $username = 'root';
@@ -11,14 +11,14 @@ $systeemFout = false;
 $notifications = [];
 
 try {
-    $conn = new PDO("mysql:host=$host;dbname=aurora_theater;charset=utf8", $username, $password);
+    $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Verwerk het formulier als er een nieuwe melding wordt verstuurd
+    // Verwerkt het formulier als er een nieuwe melding wordt gepost
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'new_notification') {
         $title = trim($_POST['title']);
         $message = trim($_POST['message']);
-        $type = 'Nieuws'; // Standaard type, of voeg een select-veld toe
+        $type = 'Nieuws';
         $created_at = date('Y-m-d');
 
         if (!empty($title) && !empty($message)) {
@@ -47,36 +47,52 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aurora Theater - Meldingen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
-<body style="background-color: #f8f9fc; margin: 0; font-family: 'Poppins', sans-serif;">
+<body>
 
-    <div class="error-banner <?php echo $systeemFout ? 'active' : ''; ?>">
-        Meldingen kunnen momenteel niet worden geladen. Probeer het later opnieuw.
+    <div class="error-banner <?php echo $systeemFout ? 'active' : ''; ?>" id="error-message">
+        De pagina kan momenteel niet geladen worden. Probeer het later opnieuw.
     </div>
 
     <header>
         <nav class="navbar">
-            <div class="logo"><span class="logo-icon">★</span>Aurora Theater</div>
-            <ul class="nav-links">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="#">Informatie</a></li>
-                <li><a href="meldingen.php" class="active">Meldingen</a></li>
-            </ul>
-            <div class="nav-buttons">
-                <button class="btn-login">Login</button>
-                <button class="btn-register">Registreren</button>
+            <div class="logo"><span class="logo-icon">★</span> Aurora Theater</div>
+
+            <button class="menu-toggle" id="mobile-menu" aria-label="Open menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
+            <div class="nav-menu" id="nav-menu">
+                <ul class="nav-links">
+                    <li><a href="index.php">Home</a></li>
+                    <li><a href="#">Informatie</a></li>
+                    <li><a href="meldingen.php" class="active">Meldingen</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+                <div class="nav-buttons">
+                    <a href="meldingen.php" style="text-decoration: none;">
+                        <button class="btn-notifications" id="btn-alerts" aria-label="Meldingen">
+                            🔔 Meldingen
+                        </button>
+                    </a>
+                    <button class="btn-login">Login</button>
+                    <button class="btn-register">Registreren</button>
+                </div>
             </div>
         </nav>
     </header>
 
-    <main style="max-width: 1000px; margin: 0 auto; padding: 40px 20px;">
-        <h1 style="text-align: center; color: #1e272c; font-size: 54px; font-weight: 700; margin-bottom: 50px; letter-spacing: -1px;">Meldingen</h1>
+    <main class="notifications-container">
+        <h1 style="text-align: center; margin-bottom: 40px; font-size: 48px;">Meldingen</h1>
 
         <div style="margin-bottom: 50px;">
-            <h2 style="font-size: 22px; color: #1e272c; margin-bottom: 25px; font-weight: 600;">Recente Meldingen</h2>
+            <h2 style="font-size: 28px; margin-bottom: 25px; font-family: 'Playfair Display', serif;">Recente Meldingen</h2>
 
             <?php if (!$systeemFout && !empty($notifications)): ?>
                 <?php foreach ($notifications as $notif):
@@ -98,7 +114,7 @@ try {
                         </div>
                         <div class="card-body-content">
                             <div class="card-title-row">
-                                <h3><?php echo htmlspecialchars($notif['title']); ?></h3>
+                                <h3 style="font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 18px; margin: 0; color: var(--text-dark);"><?php echo htmlspecialchars($notif['title']); ?></h3>
                                 <span class="badge <?php echo $typeClass; ?>"><?php echo htmlspecialchars($notif['type']); ?></span>
                             </div>
                             <p class="card-message"><?php echo htmlspecialchars($notif['message']); ?></p>
@@ -106,11 +122,13 @@ try {
                         </div>
                     </div>
                 <?php endforeach; ?>
+            <?php else: ?>
+                <p>Er zijn momenteel geen meldingen beschikbaar of er is een databasefout.</p>
             <?php endif; ?>
         </div>
 
         <div class="form-card">
-            <h2>Nieuwe Melding Maken</h2>
+            <h2 style="margin-bottom: 20px;">Nieuwe Melding Maken</h2>
             <form action="meldingen.php" method="POST">
                 <input type="hidden" name="action" value="new_notification">
 
@@ -128,9 +146,9 @@ try {
             </form>
         </div>
 
-        <div class="form-card" style="margin-top: 40px; margin-bottom: 60px;">
-            <h2>Feedback</h2>
-            <p style="color: #6c757d; font-size: 14px; margin-bottom: 20px;">
+        <div class="form-card">
+            <h2 style="margin-bottom: 10px;">Feedback</h2>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
                 We waarderen uw feedback! Laat ons weten wat u van onze service vindt.
             </p>
             <form action="#" method="POST">
@@ -142,6 +160,30 @@ try {
         </div>
     </main>
 
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3><span class="logo-icon">★</span> Aurora Theater</h3>
+                <p>Het thuis van de mooiste cultuur- en muziekvoorstellingen.</p>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact & Adres</h4>
+                <p>📍 Theaterplein 1, 1011 VX Amsterdam</p>
+                <p>📞 020 - 123 4567</p>
+                <p>✉️ info@auroratheater.nl</p>
+            </div>
+            <div class="footer-hours">
+                <h4>Openingstijden Kassa</h4>
+                <p>Maandag - Vrijdag: 14:00 - 22:00</p>
+                <p>Zaterdag & Zondag: 12:00 - 23:00</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Aurora Theater. Alle rechten voorbehouden.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
 </body>
 
 </html>
