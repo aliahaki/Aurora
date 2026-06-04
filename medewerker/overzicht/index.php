@@ -25,7 +25,7 @@ $resultaat = mysqli_query($conn, $sql);
 
 <div class="container">
     <div class="header">
-        <h1>🎭 Aurora Theater</h1>
+        <h1>Aurora Theater</h1>
         <p>Overzicht medewerkers</p>
     </div>
     

@@ -1,95 +1,143 @@
-/* SIMPELE CSS - Aurora Theater */
+/* ==========================================================================
+   AURORA THEATER - PURPLE THEME
+   ========================================================================== */
+
+:root {
+    --deep-purple: #14141f;
+    --accent-purple: #6c5ce7;
+    --button-blue: #5d6cf3;
+    --bg-light: #f6f6f9;
+    --gold: #f1c40f;
+    --white: #ffffff;
+    --text-dark: #14141f;
+    --text-muted: #57606f;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    --shadow-hover: 0 15px 40px rgba(108, 92, 231, 0.15);
+}
 
 * {
-    margin: 1;
+    margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f5efe9;
-    padding: 30px 20px;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, var(--bg-light) 0%, #e8e6f0 100%);
+    color: var(--text-dark);
+    min-height: 100vh;
+    padding: 40px 20px;
 }
 
+/* Container */
 .container {
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto;
-    background: white;
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: var(--white);
+    border-radius: 28px;
+    padding: 40px;
+    box-shadow: var(--shadow);
 }
 
 /* Header */
 .header {
     text-align: center;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #f0e4d8;
+    margin-bottom: 35px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--accent-purple);
 }
 
 .header h1 {
-    color: #7a4c2c;
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    color: var(--deep-purple);
+}
+
+.logo-icon {
+    background-color: var(--accent-purple);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
     font-size: 32px;
-    margin-bottom: 5px;
 }
 
 .header p {
-    color: #b69874;
+    color: var(--text-muted);
     font-size: 16px;
+    margin-top: 10px;
 }
 
 /* Zoek sectie */
 .zoek-section {
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 
 .zoek-form {
     display: flex;
-    gap: 10px;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg-light);
+    padding: 8px 20px;
+    border-radius: 60px;
+    border: 1px solid #e0dce8;
     flex-wrap: wrap;
+}
+
+.zoek-form i {
+    color: var(--accent-purple);
+    font-size: 18px;
 }
 
 .zoek-form input {
     flex: 1;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 25px;
-    font-size: 16px;
+    padding: 14px 0;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    background: transparent;
+    font-family: 'Poppins', sans-serif;
 }
 
 .zoek-form button {
-    background: #7a4c2c;
+    background: var(--accent-purple);
     color: white;
     border: none;
-    padding: 10px 25px;
-    border-radius: 25px;
+    padding: 10px 28px;
+    border-radius: 40px;
     cursor: pointer;
-    font-size: 16px;
+    font-weight: 600;
+    transition: 0.2s;
 }
 
 .zoek-form button:hover {
-    background: #9b623b;
+    background: var(--button-blue);
+    transform: scale(1.02);
 }
 
 .wis-knop {
-    background: #b87c4f;
-    color: white;
+    background: #e0dce8;
+    color: var(--text-dark);
     text-decoration: none;
     padding: 10px 20px;
-    border-radius: 25px;
-    display: inline-block;
+    border-radius: 40px;
+    font-size: 14px;
+    transition: 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .wis-knop:hover {
-    background: #9b623b;
+    background: #ccc6dc;
 }
 
 /* Tabel */
 .tabel-container {
     overflow-x: auto;
     margin-bottom: 25px;
+    border-radius: 20px;
 }
 
 table {
@@ -98,67 +146,122 @@ table {
 }
 
 th {
-    background: #7a4c2c;
+    background: var(--deep-purple);
     color: white;
-    padding: 12px;
+    padding: 15px 12px;
     text-align: left;
     font-weight: 600;
+    font-family: 'Poppins', sans-serif;
 }
 
 td {
-    padding: 10px 12px;
+    padding: 14px 12px;
     border-bottom: 1px solid #eee;
+    vertical-align: middle;
 }
 
 tr:hover {
-    background: #faf5f0;
+    background: #f3f0ff;
 }
 
+.naam-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar-small {
+    width: 36px;
+    height: 36px;
+    background: var(--accent-purple);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.afdeling-badge {
+    background: #e8e0ff;
+    color: var(--accent-purple);
+    padding: 5px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* Geen data */
 .geen-data {
     text-align: center;
     padding: 40px;
-    color: #aa8c6e;
+    color: var(--text-muted);
 }
 
 /* Statistiek */
 .stats {
-    background: #f7ede4;
-    padding: 12px;
-    border-radius: 12px;
+    background: linear-gradient(135deg, #e8e0ff 0%, #f3f0ff 100%);
+    padding: 16px 20px;
+    border-radius: 16px;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .stats p {
-    color: #5a4534;
-    font-size: 15px;
+    color: var(--deep-purple);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.stats i {
+    color: var(--accent-purple);
+    margin-right: 8px;
 }
 
 /* Footer */
 .footer {
     text-align: center;
-    padding-top: 15px;
-    border-top: 1px solid #f0e4d8;
-    color: #aa8c6e;
-    font-size: 13px;
+    padding-top: 20px;
+    border-top: 1px solid #e0dce8;
+    color: var(--text-muted);
+    font-size: 14px;
 }
 
-/* Responsive - voor telefoons */
-@media (max-width: 600px) {
-    .container {
+/* Responsive */
+@media (max-width: 700px) {
+    body {
         padding: 20px;
     }
     
+    .container {
+        padding: 25px;
+    }
+    
     .header h1 {
-        font-size: 24px;
+        font-size: 32px;
+    }
+    
+    .zoek-form {
+        flex-wrap: wrap;
+    }
+    
+    .zoek-form button,
+    .wis-knop {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
     }
     
     th, td {
-        padding: 8px;
-        font-size: 14px;
+        padding: 10px 8px;
+        font-size: 13px;
     }
     
-    .zoek-form button, .wis-knop {
-        padding: 8px 15px;
+    .avatar-small {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
     }
 }
