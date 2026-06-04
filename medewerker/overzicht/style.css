@@ -50,6 +50,45 @@ body {
     margin-right: 10px;
     display: inline-block;
 }
+.main-footer {
+    background-color: var(--deep-purple);
+    color: #a4b0be;
+    padding: 70px 8% 25px 8%;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #2f3542;
+}
+
+.footer-brand,
+.footer-contact,
+.footer-hours {
+    flex: 1;
+    min-width: 250px;
+}
+
+.footer-container h3,
+.footer-container h4 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.footer-container p {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 25px;
+    font-size: 13px;
+    color: #747d8c;
+}
 
 /* Knoppen in navbar */
 .nav-buttons {
@@ -66,24 +105,16 @@ body {
     transition: 0.2s;
 }
 
-.btn-notifications {
-    background-color: #f39c12;
-    color: white;
-}
-
-.btn-notifications:hover {
-    background-color: #e67e22;
-    transform: scale(1.02);
-}
-
+.btn-notifications,
 .btn-employee {
-    background-color: var(--accent-purple);
-    color: white;
+    background-color: #f1f2f6;
+    color: #14141f;
+    transition: background-color 0.2s ease;
 }
 
+.btn-notifications:hover,
 .btn-employee:hover {
-    background-color: var(--button-blue);
-    transform: scale(1.02);
+    background-color: #e4e7eb;
 }
 
 .btn-login {
@@ -496,4 +527,5 @@ tr:hover {
     background: var(--button-blue, #5d6cf3);
     transform: scale(1.02);
 }
+
 }

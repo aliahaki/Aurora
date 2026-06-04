@@ -77,11 +77,16 @@ if ($db_beschikbaar) {
                     <li><a href="#">Contact</a></li>
                 </ul>
                 <div class="nav-buttons">
-                    <a href="/Aurora/meldingen.php" style="text-decoration: none;">
+                    <a href="../../meldingen.php" style="text-decoration: none;">
                         <button class="btn-notifications" id="btn-alerts" aria-label="Meldingen">
                             🔔 Meldingen
                         </button>
                     </a>
+                    <a href="../../medewerker/overzicht/index.php" style="text-decoration: none;">
+    <button class="btn-employee" id="btn-employee">
+        💼 Medewerker
+    </button>
+</a>
             </div>
         </div>
     </nav>
@@ -160,16 +165,39 @@ if ($db_beschikbaar) {
         
         <!-- Totaal aantal -->
         <div class="stats">
-            <p><i class="fas fa-users"></i> Totaal medewerkers: <strong><?php echo $totaal; ?></strong></p>
-        </div>
-        
-        <!-- Footer -->
-        <div class="footer">
-            <p>✨ Ervaar de magie van live theater in Amsterdam ✨</p>
-        </div>
-        
+        <p><i class="fas fa-users"></i> Totaal medewerkers:
+            <strong><?php echo $totaal; ?></strong>
+        </p>
+    </div>
+       
     <?php endif; ?>
 </div>
+<!-- Footer -->
+        <footer class="main-footer">
+    <div class="footer-container">
+        <div class="footer-brand">
+            <h3><span class="logo-icon">★</span> Aurora Theater</h3>
+            <p>Het thuis van de mooiste cultuur- en muziekvoorstellingen.</p>
+        </div>
+
+        <div class="footer-contact">
+            <h4>Contact & Adres</h4>
+            <p>📍 Theaterplein 1, 1011 VX Amsterdam</p>
+            <p>📞 020 - 123 4567</p>
+            <p>✉️ info@auroratheater.nl</p>
+        </div>
+
+        <div class="footer-hours">
+            <h4>Openingstijden Kassa</h4>
+            <p>Maandag - Vrijdag: 14:00 - 22:00</p>
+            <p>Zaterdag & Zondag: 12:00 - 23:00</p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 Aurora Theater. Alle rechten voorbehouden.</p>
+    </div>
+</footer>
 
 <!-- Javascript voor hamburger menu -->
 <script>
