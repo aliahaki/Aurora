@@ -478,8 +478,9 @@ tr:hover {
     margin-right: 8px;
 }
 
+/* Stijl voor de Opnieuw proberen knop */
 .btn-retry {
-    background: var(--accent-purple);
+    background: var(--accent-purple, #6c5ce7);
     color: white;
     border: none;
     padding: 12px 30px;
@@ -488,10 +489,11 @@ tr:hover {
     font-weight: 600;
     font-size: 16px;
     transition: 0.2s;
+    margin-top: 20px;
 }
 
 .btn-retry:hover {
-    background: var(--button-blue);
+    background: var(--button-blue, #5d6cf3);
     transform: scale(1.02);
 }
 }
