@@ -85,7 +85,7 @@ if ($systeemFout) {
                         </button>
                     </a>
 
-                    <a href="medewerker.php" style="text-decoration: none;">
+                    <a href="./medewerker/overzicht/index.php" style="text-decoration: none;">
                         <button class="btn-employee" id="btn-employee" aria-label="Medewerker">
                             💼 Medewerker
                         </button>
