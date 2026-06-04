@@ -18,6 +18,31 @@ try {
     // Als de database offline is of niet bestaat: Unhappy Scenario wordt actief!
     $systeemFout = true;
 }
+
+// UNHAPPY SCENARIO VOOR DE HOMEPAGE
+// Als er een systeemfout is, tonen we ALLEEN de banner en stoppen we direct!
+if ($systeemFout) {
+?>
+    <!DOCTYPE html>
+    <html lang="nl">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Aurora Theater - Foutmelding</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+
+    <body class="error-page-body">
+        <div class="error-banner active" id="error-message">
+            De pagina kan momenteel niet geladen worden. Probeer het later opnieuw.
+        </div>
+    </body>
+
+    </html>
+<?php
+    exit(); // PHP stopt hier direct met het laden van de rest van de pagina.
+}
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -50,13 +75,15 @@ try {
                 <ul class="nav-links">
                     <li><a href="#" class="active">Home</a></li>
                     <li><a href="#">Informatie</a></li>
-                    <li><a href="#">Over Ons</a></li>
+                    <li><a href="meldingen.php">Meldingen</a></li>
                     <li><a href="#">Contact</a></li>
                 </ul>
                 <div class="nav-buttons">
-                    <button class="btn-notifications" id="btn-alerts" aria-label="Meldingen">
-                        🔔 Meldingen
-                    </button>
+                    <a href="meldingen.php" style="text-decoration: none;">
+                        <button class="btn-notifications" id="btn-alerts" aria-label="Meldingen">
+                            🔔 Meldingen
+                        </button>
+                    </a>
                     <button class="btn-login">Login</button>
                     <button class="btn-register">Registreren</button>
                 </div>
@@ -84,7 +111,7 @@ try {
             <div class="info-text">
                 <span class="section-tag">Pure Magie</span>
                 <h2>Een Onvergetelijke Avond Uit</h2>
-                <p>Al meer dan 25 jaar is Aurora Theater het culturele hart van Amsterdam. Stap binnen in onze historische zaal en laat je meeslepen door adembenemende verhalen, prachtige live muziek en intieme cabaretvoorstellingen.</p>
+                <p>Al meer dan 25 jaar is Aurora Theater het culturele hart van Amsterdam. Stap binnen in onze historische zaal en laat je meeslepen door adembenemende verhalen, prachtige live muziek Muscle en intieme cabaretvoorstellingen.</p>
                 <p>Van grootschalige moderne concerten tot klassieke toneelstukken van topniveau; bij ons zit je altijd bovenop de actie. Wij geloven dat theater je moet raken, verrassen en inspireren. Kom langs en geniet van een compleet verzorgde avond uit met heerlijke hapjes en drankjes.</p>
                 <button class="btn-more">Ontdek Onze Geschiedenis</button>
             </div>

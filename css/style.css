@@ -562,3 +562,20 @@ h4 {
         transform: translateY(-9px) rotate(-45deg);
     }
 }
+
+/* ==========================================================================
+   UNHAPPY SCENARIO HOMEPAGE STYLING
+   ========================================================================== */
+.error-page-body {
+    margin: 0;
+    background-color: #111;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+}
+
+.error-page-body .error-banner.active {
+    display: block;
+    position: static;
+    text-align: center;
+    padding: 20px;
+}
