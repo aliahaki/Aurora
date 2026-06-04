@@ -579,3 +579,20 @@ h4 {
     text-align: center;
     padding: 20px;
 }
+
+/* Geef zowel de Meldingen als de Medewerker knop dezelfde stijl */
+.btn-notifications,
+.btn-employee {
+    background-color: #f1f2f6;
+    /* Lichte achtergrond */
+    color: #14141f;
+    /* Donkere tekstkleur */
+    transition: background-color 0.2s ease;
+}
+
+/* Hover effect voor beide knoppen */
+.btn-notifications:hover,
+.btn-employee:hover {
+    background-color: #e4e7eb;
+    /* Iets donkerder grijs bij eroverheen muizen */
+}
