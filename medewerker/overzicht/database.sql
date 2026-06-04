@@ -12,3 +12,8 @@ INSERT INTO medewerkers (naam, functie, afdeling) VALUES
 ('Marlies de Vries', 'Front of House', 'Zaal'),
 ('Jan Bakker', 'Geluidstechnicus', 'Techniek'),
 ('Sophie Jansen', 'Ticketverkoop', 'Kassa'),
+('Emma de Wit', 'Marketing', 'Communicatie'),
+('Daan Visser', 'Geluidstechnicus', 'Techniek'),
+('Nina van der Veen', 'Kassa', 'Kassa'),
+('Tim Smit', 'Horeca', 'Horeca'),
+('Fenna de Jonge', 'Front of House', 'Zaal');
