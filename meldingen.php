@@ -190,6 +190,12 @@ try {
                             🔔 Meldingen
                         </button>
                     </a>
+
+                    <a href="medewerker.php" style="text-decoration: none;">
+                        <button class="btn-employee" id="btn-employee" aria-label="Medewerker">
+                            💼 Medewerker
+                        </button>
+                    </a>
                     <button class="btn-login">Login</button>
                     <button class="btn-register">Registreren</button>
                 </div>
