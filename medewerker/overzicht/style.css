@@ -412,4 +412,86 @@ tr:hover {
     .menu-toggle.active .bar:nth-child(3) {
         transform: translateY(-8px) rotate(-45deg);
     }
+    /* ========= UNHAPPY SCENARIO - DATABASE FOUT ========= */
+.error-banner {
+    display: none;
+    background-color: #ff4d4d;
+    color: white;
+    text-align: center;
+    padding: 15px 20px;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.error-banner.active {
+    display: block;
+}
+
+.error-container {
+    text-align: center;
+    padding: 60px 40px;
+    background: #fff5f5;
+    border-radius: 24px;
+    border: 1px solid #ffcccc;
+}
+
+.error-icon {
+    font-size: 64px;
+    color: #ff4d4d;
+    margin-bottom: 20px;
+}
+
+.error-container h2 {
+    color: #cc0000;
+    font-size: 28px;
+    margin-bottom: 15px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.error-container p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.error-hint {
+    font-weight: 600;
+    margin-top: 20px;
+    color: #333;
+}
+
+.error-list {
+    list-style: none;
+    display: inline-block;
+    text-align: left;
+    margin: 15px 0 25px;
+}
+
+.error-list li {
+    margin: 8px 0;
+    color: #555;
+}
+
+.error-list i {
+    color: var(--accent-purple);
+    margin-right: 8px;
+}
+
+.btn-retry {
+    background: var(--accent-purple);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 40px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+.btn-retry:hover {
+    background: var(--button-blue);
+    transform: scale(1.02);
+}
 }
