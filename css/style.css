@@ -1,9 +1,6 @@
 /* ==========================================================================
    0. UNHAPPY SCENARIO (FOUTMELDING BANNER)
    ========================================================================== */
-/* ==========================================================================
-   0. UNHAPPY SCENARIO (FOUTMELDING BANNER)
-   ========================================================================== */
 .error-banner {
     display: none;
     background-color: #ff4d4d;
@@ -13,7 +10,6 @@
     font-weight: 600;
     font-size: 15px;
     position: relative;
-    /* Veranderd van fixed naar relative */
     width: 100%;
     z-index: 2000;
     box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3);
@@ -81,12 +77,10 @@ h4 {
     align-items: center;
     padding: 18px 8%;
     background-color: var(--deep-purple);
-    /* Zorgt dat de balk niet transparant is */
     color: var(--white);
     position: sticky;
     top: 0;
     z-index: 1500;
-    /* Dit zorgt ervoor dat de balk ALTIJD bovenop de foto's blijft liggen */
     transition: top 0.3s ease;
 }
 
@@ -583,8 +577,6 @@ h4 {
 /* ==========================================================================
    9. MELDINGEN PAGINA & STYLING FIX
    ========================================================================== */
-
-/* Container voor de brede lay-out */
 .notifications-container {
     width: 100%;
     max-width: 1200px;
@@ -592,7 +584,6 @@ h4 {
     padding: 40px 8%;
 }
 
-/* De notificatie kaarten */
 .card-notification {
     display: flex;
     align-items: flex-start;
@@ -606,7 +597,6 @@ h4 {
     gap: 20px;
 }
 
-/* Kleuren per type melding */
 .card-notification.news {
     border-left-color: #2ecc71;
 }
@@ -619,7 +609,6 @@ h4 {
     border-left-color: #3498db;
 }
 
-/* Icoon wrapper */
 .card-icon-wrapper {
     display: flex;
     justify-content: center;
@@ -646,7 +635,6 @@ h4 {
     color: #3498db;
 }
 
-/* Inhoud van de kaart */
 .card-body-content {
     flex: 1;
 }
@@ -673,7 +661,6 @@ h4 {
     display: block;
 }
 
-/* Badges */
 .badge {
     padding: 4px 12px;
     border-radius: 20px;
@@ -696,7 +683,6 @@ h4 {
     color: #3498db;
 }
 
-/* Formulier kaarten */
 .form-card {
     background: #ffffff;
     padding: 40px;
@@ -728,7 +714,6 @@ h4 {
     font-size: 14px;
 }
 
-/* Knoppen */
 .btn-submit-purple {
     background-color: #6c5ce7;
     color: white;
@@ -749,4 +734,19 @@ h4 {
     cursor: pointer;
     font-weight: 600;
     font-family: 'Poppins', sans-serif;
+}
+
+/* ==========================================================================
+   10. STYLING VOOR MELDINGEN & MEDEWERKER NAV KNOPPEN
+   ========================================================================== */
+.btn-notifications,
+.btn-employee {
+    background-color: #f1f2f6;
+    color: #14141f;
+    transition: background-color 0.2s ease;
+}
+
+.btn-notifications:hover,
+.btn-employee:hover {
+    background-color: #e4e7eb;
 }
