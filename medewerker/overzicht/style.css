@@ -1,18 +1,17 @@
-/* ==========================================================================
-   AURORA THEATER - PURPLE THEME
-   ========================================================================== */
+/* ============================================
+   AURORA THEATER - PAARSE STIJL
+   ============================================ */
 
+/* BASIS STIJLEN */
 :root {
-    --deep-purple: #14141f;
-    --accent-purple: #6c5ce7;
-    --button-blue: #5d6cf3;
-    --bg-light: #f6f6f9;
-    --gold: #f1c40f;
-    --white: #ffffff;
-    --text-dark: #14141f;
-    --text-muted: #57606f;
+    --deep-purple: #14141f;      /* Donkerpaars voor achtergronden */
+    --accent-purple: #6c5ce7;    /* Helderpaars voor accenten */
+    --button-blue: #5d6cf3;      /* Blauw voor knoppen */
+    --bg-light: #f6f6f9;         /* Lichtgrijze achtergrond */
+    --white: #ffffff;            /* Wit */
+    --text-dark: #14141f;        /* Donkere tekst */
+    --text-muted: #57606f;       /* Grijze tekst */
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-    --shadow-hover: 0 15px 40px rgba(108, 92, 231, 0.15);
 }
 
 * {
@@ -25,11 +24,10 @@ body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, var(--bg-light) 0%, #e8e6f0 100%);
     color: var(--text-dark);
-    min-height: 100vh;
     padding: 40px 20px;
 }
 
-/* Container */
+/* HOOFDCONTAINER */
 .container {
     max-width: 1100px;
     margin: 0 auto;
@@ -39,7 +37,7 @@ body {
     box-shadow: var(--shadow);
 }
 
-/* Header */
+/* HEADER */
 .header {
     text-align: center;
     margin-bottom: 35px;
@@ -60,7 +58,6 @@ body {
     border-radius: 50%;
     display: inline-block;
     margin-right: 10px;
-    font-size: 32px;
 }
 
 .header p {
@@ -69,7 +66,7 @@ body {
     margin-top: 10px;
 }
 
-/* Zoek sectie */
+/* ZOEKBALK */
 .zoek-section {
     margin-bottom: 30px;
 }
@@ -113,7 +110,6 @@ body {
 
 .zoek-form button:hover {
     background: var(--button-blue);
-    transform: scale(1.02);
 }
 
 .wis-knop {
@@ -123,7 +119,6 @@ body {
     padding: 10px 20px;
     border-radius: 40px;
     font-size: 14px;
-    transition: 0.2s;
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -133,11 +128,10 @@ body {
     background: #ccc6dc;
 }
 
-/* Tabel */
+/* TABEL */
 .tabel-container {
     overflow-x: auto;
     margin-bottom: 25px;
-    border-radius: 20px;
 }
 
 table {
@@ -151,7 +145,6 @@ th {
     padding: 15px 12px;
     text-align: left;
     font-weight: 600;
-    font-family: 'Poppins', sans-serif;
 }
 
 td {
@@ -164,6 +157,7 @@ tr:hover {
     background: #f3f0ff;
 }
 
+/* Avatar icoon in tabel */
 .naam-cell {
     display: flex;
     align-items: center;
@@ -183,6 +177,7 @@ tr:hover {
     font-size: 14px;
 }
 
+/* Afdeling badge */
 .afdeling-badge {
     background: #e8e0ff;
     color: var(--accent-purple);
@@ -193,14 +188,13 @@ tr:hover {
     display: inline-block;
 }
 
-/* Geen data */
 .geen-data {
     text-align: center;
     padding: 40px;
     color: var(--text-muted);
 }
 
-/* Statistiek */
+/* STATISTIEK */
 .stats {
     background: linear-gradient(135deg, #e8e0ff 0%, #f3f0ff 100%);
     padding: 16px 20px;
@@ -220,7 +214,7 @@ tr:hover {
     margin-right: 8px;
 }
 
-/* Footer */
+/* FOOTER */
 .footer {
     text-align: center;
     padding-top: 20px;
@@ -229,7 +223,7 @@ tr:hover {
     font-size: 14px;
 }
 
-/* Responsive */
+/* RESPONSIVE - TELEFOON */
 @media (max-width: 700px) {
     body {
         padding: 20px;
@@ -243,6 +237,7 @@ tr:hover {
         font-size: 32px;
     }
     
+    /* Zoekbalk verticaal op telefoon */
     .zoek-form {
         flex-wrap: wrap;
     }
@@ -254,6 +249,7 @@ tr:hover {
         justify-content: center;
     }
     
+    /* Tabel kleiner op telefoon */
     th, td {
         padding: 10px 8px;
         font-size: 13px;

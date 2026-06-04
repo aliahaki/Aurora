@@ -1,8 +1,8 @@
 <?php
-// Haal de database verbinding erbij
+// Database verbinding laden
 require_once 'db.php';
 
-// Zoek functie (als er gezocht wordt)
+// Zoek functie
 $zoekterm = "";
 if (isset($_GET['zoek'])) {
     $zoekterm = $_GET['zoek'];
@@ -11,6 +11,7 @@ if (isset($_GET['zoek'])) {
     $sql = "SELECT * FROM medewerkers";
 }
 
+// Query uitvoeren
 $resultaat = mysqli_query($conn, $sql);
 ?>
 
@@ -18,12 +19,14 @@ $resultaat = mysqli_query($conn, $sql);
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aurora Theater - Medewerkers</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
+    <!-- Header / Titel -->
     <div class="header">
         <h1>Aurora Theater</h1>
         <p>Overzicht medewerkers</p>
@@ -34,6 +37,7 @@ $resultaat = mysqli_query($conn, $sql);
         <form method="GET" class="zoek-form">
             <input type="text" name="zoek" placeholder="Zoek op naam of functie..." value="<?php echo $zoekterm; ?>">
             <button type="submit">Zoeken</button>
+            <!-- Wis knop (alleen zichtbaar als er gezocht wordt) -->
             <?php if ($zoekterm != ""): ?>
                 <a href="index.php" class="wis-knop">Wis</a>
             <?php endif; ?>
@@ -53,6 +57,7 @@ $resultaat = mysqli_query($conn, $sql);
             </thead>
             <tbody>
                 <?php if (mysqli_num_rows($resultaat) > 0): ?>
+                    <!-- Loop door alle medewerkers heen -->
                     <?php while($rij = mysqli_fetch_assoc($resultaat)): ?>
                         <tr>
                             <td><?php echo $rij['id']; ?></td>
@@ -62,6 +67,7 @@ $resultaat = mysqli_query($conn, $sql);
                         </tr>
                     <?php endwhile; ?>
                 <?php else: ?>
+                    <!-- Geen resultaten gevonden -->
                     <tr>
                         <td colspan="4" class="geen-data">Geen medewerkers gevonden</td>
                     </tr>
@@ -70,11 +76,12 @@ $resultaat = mysqli_query($conn, $sql);
         </table>
     </div>
     
-    <!-- Statistiek -->
+    <!-- Statistiek: totaal aantal -->
     <div class="stats">
         <p>Totaal medewerkers: <strong><?php echo mysqli_num_rows($resultaat); ?></strong></p>
     </div>
     
+    <!-- Footer -->
     <div class="footer">
         <p>✨ Ervaar de magie van live theater in Amsterdam ✨</p>
     </div>
@@ -84,6 +91,6 @@ $resultaat = mysqli_query($conn, $sql);
 </html>
 
 <?php
-// Sluit de database verbinding
+// Database verbinding sluiten
 mysqli_close($conn);
 ?>
