@@ -316,7 +316,12 @@ if ($db_beschikbaar) {
     const openModal = document.getElementById('openModal');
     const closeModal = document.getElementById('closeModal');
     const modal = document.getElementById('employeeModal');
-
+    // Sluiten ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        modal.style.display = 'none';
+    }
+});
     if (openModal) {
         openModal.addEventListener('click', () => {
             modal.style.display = 'flex';
@@ -352,6 +357,7 @@ if (cancelModal) {
         modal.style.display = 'none';
     });
 }
+
 </script>
 </body>
 </html>
