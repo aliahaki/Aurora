@@ -229,6 +229,8 @@ try {
     <main class="notifications-container">
         <h1 style="text-align: center; margin-bottom: 40px; font-size: 48px;">Meldingen</h1>
 
+         <h2 style="font-size: 28px; margin-bottom: 25px; font-family: 'Playfair Display', serif; color: #6366f1;">Mijn Opgestelde Concepten</h2>
+            <div style="margin-bottom: 40px;">
             
         
             <hr style="border: 0; height: 1px; background: #e2e8f0; margin-bottom: 40px;">
