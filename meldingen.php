@@ -241,6 +241,11 @@ try {
                 <div class="card-notification info" style="border-left: 5px solid #6366f1; margin-bottom: 15px;">
                                 <div class="card-body-content">
                                     <div class="card-title-row">
+                                         <div style="display: flex; align-items: center; gap: 10px;">
+                                            <h3 style="font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 18px; margin: 0;"><?php echo htmlspecialchars($notif['title']); ?></h3>
+                                            <span class="badge" style="background-color: #6366f1; color: white; padding: 3px 8px; border-radius: 10px; font-size: 12px;">Concept</span>
+                                     </div>
+                                </div>
             
         
             <hr style="border: 0; height: 1px; background: #e2e8f0; margin-bottom: 40px;">
