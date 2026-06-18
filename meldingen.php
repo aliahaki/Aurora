@@ -120,23 +120,46 @@ $notifications = [];
 // HIER VANGEN WE DE FOUT OP ALS DE TABELNAAM IS VERANDERD IN PHPMYADMIN
 try {
     // Controleren of er een formulier (POST-request) wordt verstuurd
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && !$systeemFout) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
         // ACTIE 1: Er is op de knop "Melding Versturen" gedrukt
         if ($_POST['action'] === 'new_notification') {
             $title = trim($_POST['title']);
             $message = trim($_POST['message']);
-            $type = 'Nieuws';
+            $type = 'Concept';
 
             if (!empty($title) && !empty($message)) {
-                $notificationManager->createNotification($title, $message, $type);
+                // Als de database vooraf al stuk was, sturen we DIRECT door naar de error pagina
+                if ($systeemFout) {
+                    header("Location: meldingen.php?error=db");
+                    exit();
+                }
+
+                try {
+                    $success = $notificationManager->createNotification($title, $message, $type);
+                    
+                    if ($success) {
+                        header("Location: meldingen.php?success=1");
+                        exit();
+                    } else {
+                        // Als createNotification 'false' teruggeeft (omdat db null is)
+                        header("Location: meldingen.php?error=db");
+                        exit();
+                    }
+                } catch (Exception $e) {
+                    // Als er tijdens het uitvoeren een database-fout komt (bijv. tabelnaam fout)
+                    header("Location: meldingen.php?error=db");
+                    exit();
+                }
             }
         }
 
         // ACTIE 2: Er is op een prullenbak-knop gedrukt om te verwijderen
-        if ($_POST['action'] === 'delete_notification' && isset($_POST['id'])) {
-            $deleteId = intval($_POST['id']); // Maak er voor de veiligheid een heel getal (integer) van
+        if ($_POST['action'] === 'delete_notification' && isset($_POST['id']) && !$systeemFout) {
+            $deleteId = intval($_POST['id']);
             $notificationManager->deleteNotification($deleteId);
+            header("Location: meldingen.php"); // Ook netjes redirecten na verwijderen!
+            exit();
         }
     }
 
@@ -206,11 +229,49 @@ try {
     <main class="notifications-container">
         <h1 style="text-align: center; margin-bottom: 40px; font-size: 48px;">Meldingen</h1>
 
-        <div style="margin-bottom: 50px;">
+         <h2 style="font-size: 28px; margin-bottom: 25px; font-family: 'Playfair Display', serif; color: #6366f1;">Mijn Opgestelde Concepten</h2>
+            <div style="margin-bottom: 40px;">
+                 <?php 
+                $heeftConcepten = false;
+                if (!$systeemFout && !empty($notifications)): 
+                    foreach ($notifications as $notif): 
+                        if ($notif['type'] === 'Concept'): 
+                            $heeftConcepten = true;
+             ?>
+                <div class="card-notification info" style="border-left: 5px solid #6366f1; margin-bottom: 15px;">
+                                <div class="card-body-content">
+                                    <div class="card-title-row">
+                                         <div style="display: flex; align-items: center; gap: 10px;">
+                                            <h3 style="font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 18px; margin: 0;"><?php echo htmlspecialchars($notif['title']); ?></h3>
+                                            <span class="badge" style="background-color: #6366f1; color: white; padding: 3px 8px; border-radius: 10px; font-size: 12px;">Concept</span>
+                                     </div>
+                                </div>
+                                    <p class="card-message" style="margin-top: 8px; color: #475569;"><?php echo htmlspecialchars($notif['message']); ?></p>
+                                    <span style="font-size: 12px; color: #94a3b8;">Nog niet verzonden</span>
+                                </div>
+                            </div>
+                             <?php 
+                        endif;
+                    endforeach; 
+                endif; 
+                
+                if (!$heeftConcepten): ?>
+                    <p style="color: #94a3b8; font-style: italic;">Er zijn momenteel geen concepten opgesteld.</p>
+                <?php endif; ?>
+            </div>
+
+            <hr style="border: 0; height: 1px; background: #e2e8f0; margin-bottom: 40px;">
+
+       <div style="margin-bottom: 50px;">
             <h2 style="font-size: 28px; margin-bottom: 25px; font-family: 'Playfair Display', serif;">Recente Meldingen</h2>
 
             <?php if (!$systeemFout && !empty($notifications)): ?>
                 <?php foreach ($notifications as $notif):
+                    // Sla concepten hier over zodat ze alleen in de bovenste lijst staan!
+                    if ($notif['type'] === 'Concept') {
+                        continue; 
+                    }
+
                     // Bepaal de juiste CSS-klas en FontAwesome-icoon op basis van het type melding
                     $typeClass = strtolower($notif['type']);
                     if ($typeClass == 'waarschuwing') {
@@ -276,23 +337,35 @@ try {
                 <p>Er zijn momenteel geen meldingen beschikbaar of er is een databasefout.</p>
             <?php endif; ?>
         </div>
+       <div class="form-card">
+            <h2>Nieuwe Melding Maken</h2>
 
-        <div class="form-card">
-            <h2 style="margin-bottom: 20px;">Nieuwe Melding Maken</h2>
+            <?php if (isset($_POST['action']) && $_POST['action'] === 'new_notification' && !$systeemFout): ?>
+                <div class="alert alert-success">
+                    De nieuwe melding is toegevoegd en zichtbaar in het overzicht.
+                </div>
+            <?php endif; ?>
+
+            <?php if ($systeemFout): ?>
+                <div class="alert alert-danger">
+                    De database is momenteel niet bereikbaar. Uw melding kon niet worden toegevoegd. Probeer het later opnieuw.
+                </div>
+            <?php endif; ?>
+
             <form action="meldingen.php" method="POST">
                 <input type="hidden" name="action" value="new_notification">
 
                 <div class="form-group">
-                    <label>Titel</label>
-                    <input type="text" name="title" placeholder="Titel van de melding" required>
+                    <label for="title">Titel</label>
+                    <input type="text" id="title" name="title" placeholder="Titel van de melding" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Bericht</label>
-                    <textarea name="message" rows="5" placeholder="Uw bericht..." required></textarea>
+                    <label for="message">Bericht</label>
+                    <textarea id="message" name="message" rows="5" placeholder="Uw bericht..." required></textarea>
                 </div>
 
-                <button type="submit" class="btn-submit-purple" <?php echo $systeemFout ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''; ?>>Melding Versturen</button>
+                <button type="submit" class="btn-submit-purple">Toevoegen</button>
             </form>
         </div>
 
