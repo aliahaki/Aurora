@@ -750,3 +750,17 @@ h4 {
 .btn-employee:hover {
     background-color: #e4e7eb;
 }
+
+/* ==========================================================================
+   FORMULIER: NIEUWE MELDING MAKEN (FIGMA DESIGN)
+   ========================================================================== */
+
+
+/* De witte kaart waar het formulier in zit */
+.form-card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+}
