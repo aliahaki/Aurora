@@ -246,6 +246,10 @@ try {
                                             <span class="badge" style="background-color: #6366f1; color: white; padding: 3px 8px; border-radius: 10px; font-size: 12px;">Concept</span>
                                      </div>
                                 </div>
+                                    <p class="card-message" style="margin-top: 8px; color: #475569;"><?php echo htmlspecialchars($notif['message']); ?></p>
+                                    <span style="font-size: 12px; color: #94a3b8;">Nog niet verzonden</span>
+                                </div>
+                            </div>
             
         
             <hr style="border: 0; height: 1px; background: #e2e8f0; margin-bottom: 40px;">
