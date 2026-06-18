@@ -231,6 +231,14 @@ try {
 
          <h2 style="font-size: 28px; margin-bottom: 25px; font-family: 'Playfair Display', serif; color: #6366f1;">Mijn Opgestelde Concepten</h2>
             <div style="margin-bottom: 40px;">
+                 <?php 
+                $heeftConcepten = false;
+                if (!$systeemFout && !empty($notifications)): 
+                    foreach ($notifications as $notif): 
+                        if ($notif['type'] === 'Concept'): 
+                            $heeftConcepten = true;
+                ?>
+                
             
         
             <hr style="border: 0; height: 1px; background: #e2e8f0; margin-bottom: 40px;">
