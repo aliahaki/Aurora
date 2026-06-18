@@ -361,6 +361,16 @@ if (cancelModal) {
         modal.style.display = 'none';
     });
 }
+if (window.location.search.includes('success=1') ||
+    window.location.search.includes('error=1')) {
+
+    const url = new URL(window.location);
+
+    url.searchParams.delete('success');
+    url.searchParams.delete('error');
+
+    window.history.replaceState({}, '', url);
+}
 
 </script>
 </body>
