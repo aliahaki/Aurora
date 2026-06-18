@@ -819,3 +819,34 @@ h4 {
 .btn-submit-purple:hover {
     background-color: #4f46e5;
 }
+
+/* ==========================================================================
+   USER STORY SCENARIO MELDINGEN (HAPPY & UNHAPPY)
+   ========================================================================== */
+
+
+/* Basis layout voor de alert-boxen */
+.alert {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+
+/* Happy Scenario: Groene succesboodschap */
+.alert-success {
+    color: #27ae60;
+    background-color: #e8f8f5;
+    border-left: 5px solid #27ae60;
+}
+
+
+/* Unhappy Scenario: Rode database foutboodschap */
+.alert-danger {
+    color: #c0392b;
+    background-color: #f9ebea;
+    border-left: 5px solid #c0392b;
+}
