@@ -504,6 +504,43 @@ tr:hover {
     font-size: 30px;
     cursor: pointer;
 }
+.success-message {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+.toast-success {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #2ecc71;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-weight: 600;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    z-index: 9999;
+
+    animation: slideIn 0.4s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(120%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
 
 /* ========= RESPONSIVE - TELEFOON ========= */
 @media (max-width: 768px) {

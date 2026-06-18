@@ -11,10 +11,12 @@ if (isset($_POST['toevoegen'])) {
     $sql = "INSERT INTO medewerkers (naam, functie, afdeling)
             VALUES ('$naam', '$functie', '$afdeling')";
 
-    mysqli_query($conn, $sql);
-
-    header("Location: index.php");
+// Medewerker succesvol toegevoegd, pagina opnieuw laden
+header("Location: index.php?success=1");
+   if (mysqli_query($conn, $sql)) {
+    header("Location: index.php?success=1");
     exit();
+}
 }
 
 // Check of database werkt
@@ -109,7 +111,11 @@ if ($db_beschikbaar) {
 
 <!-- Hoofdinhoud -->
 <div class="container">
-    
+    <?php if (isset($_GET['success'])): ?>
+<div class="toast-success" id="toast">
+    ✅ Medewerker succesvol toegevoegd!
+</div>
+<?php endif; ?>
     <!-- Titel -->
     <div class="header">
         <h1><span class="logo-icon">A</span> Aurora Theater</h1>
@@ -298,6 +304,17 @@ if ($db_beschikbaar) {
             modal.style.display = 'none';
         }
     });
+    const toast = document.getElementById('toast');
+
+if (toast) {
+    setTimeout(() => {
+        toast.classList.add('fade-out');
+    }, 3000);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 3500);
+}
 </script>
 </body>
 </html>
