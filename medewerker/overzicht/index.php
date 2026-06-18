@@ -287,6 +287,9 @@ if ($db_beschikbaar) {
             <button type="submit" name="toevoegen">
                 Toevoegen
             </button>
+            <button type="button" id="cancelModal">
+    Annuleren
+</button>
 
         </form>
 
@@ -338,6 +341,13 @@ if (toast) {
     setTimeout(() => {
         toast.remove();
     }, 3500);
+}
+const cancelModal = document.getElementById('cancelModal');
+
+if (cancelModal) {
+    cancelModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
 }
 </script>
 </body>
