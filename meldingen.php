@@ -237,8 +237,10 @@ try {
                     foreach ($notifications as $notif): 
                         if ($notif['type'] === 'Concept'): 
                             $heeftConcepten = true;
-                ?>
-                
+             ?>
+                <div class="card-notification info" style="border-left: 5px solid #6366f1; margin-bottom: 15px;">
+                                <div class="card-body-content">
+                                    <div class="card-title-row">
             
         
             <hr style="border: 0; height: 1px; background: #e2e8f0; margin-bottom: 40px;">
