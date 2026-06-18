@@ -791,3 +791,11 @@ h4 {
     font-size: 15px;
     transition: border-color 0.2s ease;
 }
+
+/* Effect als je in een invoerveld klikt */
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #6366f1;
+    background-color: #ffffff;
+}
