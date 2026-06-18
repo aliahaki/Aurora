@@ -1,6 +1,21 @@
 <?php
 // Database verbinding laden
 require_once 'db.php';
+// Nieuwe medewerker toevoegen
+if (isset($_POST['toevoegen'])) {
+
+    $naam = $_POST['naam'];
+    $functie = $_POST['functie'];
+    $afdeling = $_POST['afdeling'];
+
+    $sql = "INSERT INTO medewerkers (naam, functie, afdeling)
+            VALUES ('$naam', '$functie', '$afdeling')";
+
+    mysqli_query($conn, $sql);
+
+    header("Location: index.php");
+    exit();
+}
 
 // Check of database werkt
 $db_beschikbaar = true;
@@ -204,19 +219,86 @@ if ($db_beschikbaar) {
     </div>
 </footer>
 
+
+<!-- Modal Nieuwe Medewerker -->
+<div id="employeeModal" class="modal">
+
+    <div class="modal-content">
+
+    <!-- Sluitknop -->
+<span id="closeModal" class="close">&times;</span>
+
+        <h2>Nieuwe medewerker toevoegen</h2>
+
+        <form method="POST">
+
+            <!-- Naam -->
+            <input
+                type="text"
+                name="naam"
+                placeholder="Volledige naam"
+                required>
+
+            <!-- Functie -->
+            <input
+                type="text"
+                name="functie"
+                placeholder="Functie"
+                required>
+
+            <!-- Afdeling -->
+            <input
+                type="text"
+                name="afdeling"
+                placeholder="Afdeling"
+                required>
+
+            <!-- Opslaan -->
+            <button type="submit" name="toevoegen">
+                Toevoegen
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
 <!-- Javascript voor hamburger menu -->
 <script>
+    // Hamburger menu
     const menuToggle = document.getElementById('mobile-menu');
     const navMenu = document.getElementById('nav-menu');
-    
+
     if (menuToggle) {
         menuToggle.addEventListener('click', () => {
             menuToggle.classList.toggle('active');
             navMenu.classList.toggle('active');
         });
     }
-</script>
 
+    // Modal
+    const openModal = document.getElementById('openModal');
+    const closeModal = document.getElementById('closeModal');
+    const modal = document.getElementById('employeeModal');
+
+    if (openModal) {
+        openModal.addEventListener('click', () => {
+            modal.style.display = 'flex';
+        });
+    }
+
+    if (closeModal) {
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+    }
+
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+</script>
 </body>
 </html>
 
