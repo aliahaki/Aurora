@@ -531,6 +531,17 @@ tr:hover {
 .toast-error {
     background: #ea9289;
 }
+.form-group select,
+.modal-content select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+}
 
 /* ========= RESPONSIVE - TELEFOON ========= */
 @media (max-width: 768px) {

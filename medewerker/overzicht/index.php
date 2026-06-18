@@ -262,11 +262,13 @@ if ($db_beschikbaar) {
 <span id="closeModal" class="close">&times;</span>
 
         <h2>Nieuwe medewerker toevoegen</h2>
+        
          <?php if (!empty($foutmelding_toevoegen)): ?>
     <div class="error-banner active">
         <?php echo $foutmelding_toevoegen; ?>
     </div>
 <?php endif; ?>
+
         <form method="POST">
 
             <!-- Naam -->
@@ -275,20 +277,23 @@ if ($db_beschikbaar) {
                 name="naam"
                 placeholder="Volledige naam"
                 required>
-
+            
             <!-- Functie -->
             <input
                 type="text"
                 name="functie"
                 placeholder="Functie"
                 required>
-
+            
             <!-- Afdeling -->
-            <input
-                type="text"
-                name="afdeling"
-                placeholder="Afdeling"
-                required>
+            <select name="afdeling" required>
+    <option value="">Kies afdeling</option>
+    <option value="Kassa">Kassa</option>
+    <option value="Techniek">Techniek</option>
+    <option value="Marketing">Marketing</option>
+    <option value="Administratie">Administratie</option>
+</select>
+        
 
             <!-- Opslaan -->
             <button type="submit" name="toevoegen">
@@ -371,6 +376,7 @@ if (window.location.search.includes('success=1') ||
 
     window.history.replaceState({}, '', url);
 }
+
 
 </script>
 </body>
