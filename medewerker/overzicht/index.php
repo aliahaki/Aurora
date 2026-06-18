@@ -127,8 +127,13 @@ if ($db_beschikbaar) {
                     <a href="index.php" class="wis-knop"><i class="fas fa-times"></i> Wis</a>
                 <?php endif; ?>
             </form>
+            <!-- Knop nieuwe medewerker -->
+            <button id="openModal" class="btn-add">
+        ➕ Toevoegen
+    </button>
         </div>
-        
+      
+    
         <!-- Tabel met medewerkers -->
         <div class="tabel-container">
             <?php if ($totaal > 0): ?>
