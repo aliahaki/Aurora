@@ -2,6 +2,8 @@
 // Database verbinding laden
 require_once 'db.php';
 // Nieuwe medewerker toevoegen
+$error_toevoegen = false;
+
 if (isset($_POST['toevoegen'])) {
 
     $naam = $_POST['naam'];
@@ -11,13 +13,26 @@ if (isset($_POST['toevoegen'])) {
     $sql = "INSERT INTO medewerkers (naam, functie, afdeling)
             VALUES ('$naam', '$functie', '$afdeling')";
 
-// Medewerker succesvol toegevoegd, pagina opnieuw laden
-header("Location: index.php?success=1");
-   if (mysqli_query($conn, $sql)) {
-    header("Location: index.php?success=1");
+    try {
+
+        mysqli_query($conn, $sql);
+
+        header("Location: index.php?success=1");
+        exit();
+
+    } catch (Exception $e) {
+
+    header("Location: index.php?error=1");
     exit();
 }
 }
+// Medewerker succesvol toegevoegd, pagina opnieuw laden
+// header("Location: index.php?success=1");
+//    if (mysqli_query($conn, $sql)) {
+//     header("Location: index.php?success=1");
+//     exit();
+// }
+
 
 // Check of database werkt
 $db_beschikbaar = true;
@@ -31,9 +46,10 @@ if (!isset($conn) || !$conn) {
     // Check of tabel bestaat
     $check_tabel = mysqli_query($conn, "SHOW TABLES LIKE 'medewerkers'");
     if (!$check_tabel || mysqli_num_rows($check_tabel) == 0) {
-        $db_beschikbaar = false;
-        $foutmelding = "Tabel 'medewerkers' bestaat niet.";
-    }
+    $db_beschikbaar = false;
+    $foutmelding =
+        "De database is momenteel niet beschikbaar. Probeer later opnieuw.";
+}
 }
 
 // Zoeken (alleen als database werkt)
@@ -116,14 +132,18 @@ if ($db_beschikbaar) {
     ✅ Medewerker succesvol toegevoegd!
 </div>
 <?php endif; ?>
+<?php if(isset($_GET['error'])): ?>
+<div class="toast-error">
+    ❌ Database niet beschikbaar. Probeer later opnieuw.
+</div>
+<?php endif; ?>
     <!-- Titel -->
     <div class="header">
         <h1><span class="logo-icon">A</span> Aurora Theater</h1>
         <p>Overzicht medewerkers</p>
     </div>
-    
-    <!-- FOUTMELDING (als database niet werkt) -->
-    <?php if (!$db_beschikbaar): ?>
+   <!-- FOUTMELDING (als database niet werkt) -->
+<?php if (!$db_beschikbaar && !isset($_GET['error'])): ?>
         <div class="error-container">
             <div class="error-icon">
                 <i class="fas fa-database"></i>
@@ -235,7 +255,11 @@ if ($db_beschikbaar) {
 <span id="closeModal" class="close">&times;</span>
 
         <h2>Nieuwe medewerker toevoegen</h2>
-
+         <?php if (!empty($foutmelding_toevoegen)): ?>
+    <div class="error-banner active">
+        <?php echo $foutmelding_toevoegen; ?>
+    </div>
+<?php endif; ?>
         <form method="POST">
 
             <!-- Naam -->
