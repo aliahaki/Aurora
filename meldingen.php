@@ -259,7 +259,7 @@ try {
                     <p style="color: #94a3b8; font-style: italic;">Er zijn momenteel geen concepten opgesteld.</p>
                 <?php endif; ?>
             </div>
-            
+
             <hr style="border: 0; height: 1px; background: #e2e8f0; margin-bottom: 40px;">
 
        <div style="margin-bottom: 50px;">
