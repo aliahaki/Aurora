@@ -9,6 +9,9 @@ if (isset($_POST['toevoegen'])) {
     $naam = $_POST['naam'];
     $functie = $_POST['functie'];
     $afdeling = $_POST['afdeling'];
+    if (empty($naam) || empty($functie) || empty($afdeling)) {
+    $error_toevoegen = true;
+}
 
     $sql = "INSERT INTO medewerkers (naam, functie, afdeling)
             VALUES ('$naam', '$functie', '$afdeling')";
