@@ -778,3 +778,16 @@ h4 {
     margin-bottom: 8px;
     color: #334155;
 }
+
+/* Inputvelden en Textarea styling zoals in Figma */
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background-color: #f8fafc;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    transition: border-color 0.2s ease;
+}
