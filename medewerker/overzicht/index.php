@@ -62,11 +62,15 @@ $totaal = 0;
 
 if ($db_beschikbaar) {
     if (isset($_GET['zoek'])) {
-        $zoekterm = $_GET['zoek'];
-        $sql = "SELECT * FROM medewerkers WHERE naam LIKE '%$zoekterm%' OR functie LIKE '%$zoekterm%'";
-    } else {
-        $sql = "SELECT * FROM medewerkers";
-    }
+    $zoekterm = $_GET['zoek'];
+    $sql = "SELECT * FROM medewerkers
+            WHERE naam LIKE '%$zoekterm%'
+            OR functie LIKE '%$zoekterm%'
+            ORDER BY naam ASC";
+} else {
+    $sql = "SELECT * FROM medewerkers
+            ORDER BY naam ASC";
+}
     
     $resultaat = mysqli_query($conn, $sql);
     
