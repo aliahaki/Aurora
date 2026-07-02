@@ -870,3 +870,7 @@ h4 {
 .btn-send-concept:hover {
     background-color: #4f46e5;
 }
+
+.btn-send-concept:active {
+    transform: scale(0.98);
+}
