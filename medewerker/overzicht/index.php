@@ -332,6 +332,53 @@ if ($db_beschikbaar) {
         <span class="close-edit">&times;</span>
 
         <h2>Medewerker Bewerken</h2>
+        <form>
+
+    <!-- Naam -->
+    <label>Volledige naam</label>
+
+    <input
+        type="text"
+        placeholder="Naam">
+
+    <!-- Functie -->
+    <label>Functie</label>
+
+    <input
+        type="text"
+        placeholder="Functie">
+
+    <!-- Afdeling -->
+    <label>Afdeling</label>
+
+    <select>
+
+        <option>Kassa</option>
+        <option>Techniek</option>
+        <option>Marketing</option>
+
+    </select>
+
+    <!-- Knoppen -->
+    <div class="modal-buttons">
+
+        <button
+            type="button">
+
+            Annuleren
+
+        </button>
+
+        <button
+            type="submit">
+
+            Opslaan
+
+        </button>
+
+    </div>
+
+</form>
 
     </div>
 <!-- Javascript voor hamburger menu -->
