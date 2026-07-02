@@ -866,3 +866,7 @@ h4 {
     cursor: pointer;
     transition: background-color 0.2s ease, transform 0.1s ease;
 }
+
+.btn-send-concept:hover {
+    background-color: #4f46e5;
+}
