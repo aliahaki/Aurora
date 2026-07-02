@@ -195,17 +195,6 @@ if ($db_beschikbaar) {
                             <!--Actieknoppen-->
                             <th>Acties</th>
                         </tr>
-                        <td>
-    <!-- Bewerken knop -->
-    <button class="btn-edit">
-        ✏️ Wijzigen
-    </button>
-
-    <!-- Verwijderen knop -->
-    <button class="btn-delete">
-        🗑️ Verwijderen
-    </button>
-</td>
                     </thead>
                     <tbody>
                         <?php while($rij = mysqli_fetch_assoc($resultaat)): ?>
@@ -217,6 +206,17 @@ if ($db_beschikbaar) {
                                 </td>
                                 <td><?php echo htmlspecialchars($rij['functie']); ?></td>
                                 <td><span class="afdeling-badge"><?php echo htmlspecialchars($rij['afdeling']); ?></span></td>
+                                                        <td>
+    <!-- Bewerken knop -->
+    <button class="btn-edit">
+        ✏️ Wijzigen
+    </button>
+
+    <!-- Verwijderen knop -->
+    <button class="btn-delete">
+        🗑️ Verwijderen
+    </button>
+</td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
