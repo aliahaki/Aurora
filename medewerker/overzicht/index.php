@@ -208,9 +208,9 @@ if ($db_beschikbaar) {
                                 <td><span class="afdeling-badge"><?php echo htmlspecialchars($rij['afdeling']); ?></span></td>
                                                         <td>
     <!-- Bewerken knop -->
-    <button class="btn-edit">
-        ✏️ Wijzigen
-    </button>
+    <button type="button" class="btn-edit">
+    ✏️ Wijzigen
+</button>
 
     <!-- Verwijderen knop -->
     <button class="btn-delete">
@@ -319,6 +319,10 @@ if ($db_beschikbaar) {
         </form>
 
     </div>
+
+</div>
+
+</div>
     <!-- Bewerken Modal -->
 <div id="editModal" class="modal">
 
@@ -330,10 +334,6 @@ if ($db_beschikbaar) {
         <h2>Medewerker Bewerken</h2>
 
     </div>
-
-</div>
-
-</div>
 <!-- Javascript voor hamburger menu -->
 <script>
     // Hamburger menu
@@ -402,6 +402,47 @@ if (window.location.search.includes('success=1') ||
 
     window.history.replaceState({}, '', url);
 }
+// ================================
+// Bewerken modal openen/sluiten
+// ================================
+
+// Alle wijzigknoppen
+const editButtons = document.querySelectorAll('.btn-edit');
+
+// Bewerken modal
+const editModal = document.getElementById('editModal');
+
+// Sluitknop
+const closeEdit = document.querySelector('.close-edit');
+
+// Open modal
+editButtons.forEach(button => {
+
+    button.addEventListener('click', () => {
+
+        editModal.classList.add("show");
+
+    });
+
+});
+
+// Sluiten via kruisje
+closeEdit.addEventListener('click', () => {
+
+    editModal.classList.remove("show");
+
+});
+
+// Sluiten buiten het venster
+window.addEventListener('click', (e) => {
+
+    if (e.target === editModal) {
+
+        editModal.classList.remove("show");
+
+    }
+
+});
 
 
 </script>
