@@ -874,3 +874,13 @@ h4 {
 .btn-send-concept:active {
     transform: scale(0.98);
 }
+
+/* Aanvullende algemene alert-styling voor de foutbannertjes */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+}
