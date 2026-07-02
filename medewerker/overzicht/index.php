@@ -541,6 +541,50 @@ window.addEventListener('click', (e) => {
     }
 
 });
+// =========================================
+// Verwijder modal
+// =========================================
+
+// Alle verwijder knoppen
+const deleteButtons =
+document.querySelectorAll(".btn-delete");
+
+// Modal
+const deleteModal =
+document.getElementById("deleteModal");
+
+// Sluitknop
+const closeDelete =
+document.querySelector(".close-delete");
+
+// Openen
+deleteButtons.forEach(button=>{
+
+    button.addEventListener("click",()=>{
+
+        deleteModal.classList.add("show");
+
+    });
+
+});
+
+// Kruisje
+closeDelete.addEventListener("click",()=>{
+
+    deleteModal.classList.remove("show");
+
+});
+
+// Buiten klikken
+window.addEventListener("click",(e)=>{
+
+    if(e.target===deleteModal){
+
+        deleteModal.classList.remove("show");
+
+    }
+
+});
 
 
 </script>
