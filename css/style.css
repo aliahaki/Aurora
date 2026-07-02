@@ -850,3 +850,19 @@ h4 {
     background-color: #f9ebea;
     border-left: 5px solid #c0392b;
 }
+
+/* ==========================================================================
+   USER STORY 9: STYLING VOOR DE VERSTUURKNOP BIJ CONCEPTEN
+   ========================================================================== */
+.btn-send-concept {
+    background-color: #6366f1;
+    color: #ffffff;
+    border: none;
+    padding: 8px 18px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
