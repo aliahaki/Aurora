@@ -88,6 +88,7 @@ class NotificationManager
         ]);
     }
 
+
     // FUNCTIE: Verwijder een melding uit de database met het ID
     public function deleteNotification(int $id): bool
     {
@@ -137,7 +138,7 @@ try {
 
                 try {
                     $success = $notificationManager->createNotification($title, $message, $type);
-                    
+
                     if ($success) {
                         header("Location: meldingen.php?success=1");
                         exit();
@@ -153,6 +154,7 @@ try {
                 }
             }
         }
+
 
         // ACTIE 2: Er is op een prullenbak-knop gedrukt om te verwijderen
         if ($_POST['action'] === 'delete_notification' && isset($_POST['id']) && !$systeemFout) {
@@ -229,47 +231,65 @@ try {
     <main class="notifications-container">
         <h1 style="text-align: center; margin-bottom: 40px; font-size: 48px;">Meldingen</h1>
 
-         <h2 style="font-size: 28px; margin-bottom: 25px; font-family: 'Playfair Display', serif; color: #6366f1;">Mijn Opgestelde Concepten</h2>
-            <div style="margin-bottom: 40px;">
-                 <?php 
-                $heeftConcepten = false;
-                if (!$systeemFout && !empty($notifications)): 
-                    foreach ($notifications as $notif): 
-                        if ($notif['type'] === 'Concept'): 
-                            $heeftConcepten = true;
-             ?>
-                <div class="card-notification info" style="border-left: 5px solid #6366f1; margin-bottom: 15px;">
-                                <div class="card-body-content">
-                                    <div class="card-title-row">
-                                         <div style="display: flex; align-items: center; gap: 10px;">
-                                            <h3 style="font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 18px; margin: 0;"><?php echo htmlspecialchars($notif['title']); ?></h3>
-                                            <span class="badge" style="background-color: #6366f1; color: white; padding: 3px 8px; border-radius: 10px; font-size: 12px;">Concept</span>
-                                     </div>
+        <h2 style="font-size: 28px; margin-bottom: 25px; font-family: 'Playfair Display', serif; color: #6366f1;">Mijn Opgestelde Concepten</h2>
+        <div style="margin-bottom: 40px;">
+            <?php
+            $heeftConcepten = false;
+            if (!$systeemFout && !empty($notifications)):
+                foreach ($notifications as $notif):
+                    if ($notif['type'] === 'Concept'):
+                        $heeftConcepten = true;
+            ?>
+                        <div class="card-notification concept-item" style="border: 1px dashed #b4b6f9; margin-bottom: 25px; background: #fff; padding: 24px; border-radius: 12px; position: relative;">
+                            <div class="card-body-content" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+
+                                <div style="display: flex; flex-direction: column; gap: 6px;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <span class="badge" style="background-color: #eef2ff; color: #6366f1; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; font-family: 'Poppins', sans-serif;">Nog niet verzonden</span>
+                                        <span style="font-size: 13px; color: #94a3b8; font-family: 'Poppins', sans-serif;">22 juni 2026</span>
+                                    </div>
+
+                                    <h3 style="font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 18px; margin: 4px 0 0 0; color: #1e293b;"><?php echo htmlspecialchars($notif['title']); ?></h3>
+
+                                    <p class="card-message" style="margin: 2px 0 0 0; color: #64748b; font-size: 14px; font-family: 'Poppins', sans-serif;"><?php echo htmlspecialchars($notif['message']); ?></p>
                                 </div>
-                                    <p class="card-message" style="margin-top: 8px; color: #475569;"><?php echo htmlspecialchars($notif['message']); ?></p>
-                                    <span style="font-size: 12px; color: #94a3b8;">Nog niet verzonden</span>
+
+                                <div style="display: flex; align-items: center; gap: 12px; flex-shrink: 0;">
+                                    <form action="meldingen.php" method="POST" style="margin: 0;">
+                                        <input type="hidden" name="action" value="send_notification">
+                                        <input type="hidden" name="id" value="<?php echo $notif['id']; ?>">
+                                        <button type="submit" style="background-color: #6366f1; color: white; border: none; padding: 10px 24px; border-radius: 24px; font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 14px; cursor: pointer; transition: background 0.2s; shadow: 0 2px 4px rgba(99, 102, 241, 0.2);">Versturen</button>
+                                    </form>
+
+                                    <form action="meldingen.php" method="POST" onsubmit="return confirm('Weet je zeker dat je dit concept wilt verwijderen?');" style="margin: 0;">
+                                        <input type="hidden" name="action" value="delete_notification">
+                                        <input type="hidden" name="id" value="<?php echo $notif['id']; ?>">
+                                        <button type="submit" style="background-color: white; color: #64748b; border: 1px solid #e2e8f0; padding: 10px 24px; border-radius: 24px; font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 14px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#cbd5e1'; this.style.color='#334155';" onmouseout="this.style.borderColor='#e2e8f0'; this.style.color='#64748b';">Verwijderen</button>
+                                    </form>
                                 </div>
+
                             </div>
-                             <?php 
-                        endif;
-                    endforeach; 
-                endif; 
-                
-                if (!$heeftConcepten): ?>
-                    <p style="color: #94a3b8; font-style: italic;">Er zijn momenteel geen concepten opgesteld.</p>
-                <?php endif; ?>
-            </div>
+                        </div>
+                <?php
+                    endif;
+                endforeach;
+            endif;
 
-            <hr style="border: 0; height: 1px; background: #e2e8f0; margin-bottom: 40px;">
+            if (!$heeftConcepten): ?>
+                <p style="color: #94a3b8; font-style: italic;">Er zijn momenteel geen concepten opgesteld.</p>
+            <?php endif; ?>
+        </div>
 
-       <div style="margin-bottom: 50px;">
+        <hr style="border: 0; height: 1px; background: #e2e8f0; margin-bottom: 40px;">
+
+        <div style="margin-bottom: 50px;">
             <h2 style="font-size: 28px; margin-bottom: 25px; font-family: 'Playfair Display', serif;">Recente Meldingen</h2>
 
             <?php if (!$systeemFout && !empty($notifications)): ?>
                 <?php foreach ($notifications as $notif):
                     // Sla concepten hier over zodat ze alleen in de bovenste lijst staan!
                     if ($notif['type'] === 'Concept') {
-                        continue; 
+                        continue;
                     }
 
                     // Bepaal de juiste CSS-klas en FontAwesome-icoon op basis van het type melding
@@ -337,7 +357,7 @@ try {
                 <p>Er zijn momenteel geen meldingen beschikbaar of er is een databasefout.</p>
             <?php endif; ?>
         </div>
-       <div class="form-card">
+        <div class="form-card">
             <h2>Nieuwe Melding Maken</h2>
 
             <?php if (isset($_POST['action']) && $_POST['action'] === 'new_notification' && !$systeemFout): ?>
