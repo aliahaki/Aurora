@@ -319,6 +319,19 @@ if ($db_beschikbaar) {
         </form>
 
     </div>
+    <!-- Bewerken Modal -->
+<div id="editModal" class="modal">
+
+    <div class="modal-content">
+
+        <!-- Sluitknop -->
+        <span class="close-edit">&times;</span>
+
+        <h2>Medewerker Bewerken</h2>
+
+    </div>
+
+</div>
 
 </div>
 <!-- Javascript voor hamburger menu -->
