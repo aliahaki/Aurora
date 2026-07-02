@@ -90,6 +90,10 @@ class NotificationManager
 
     // NIEUWE FUNCTIE USER STORY 9: Wijzig type van 'Concept' naar 'Info' (versturen)
     public function sendNotification(int $id, string $newType = 'Info'): bool
+    {
+        if ($this->db === null) {
+            return false;
+        }
 
 
     // FUNCTIE: Verwijder een melding uit de database met het ID
