@@ -1,450 +1,654 @@
-/* ============================================
-   AURORA THEATER - PAARSE STIJL
-   ============================================ */
+/* ======================================================
+   AURORA THEATER
+   Global styles
+====================================================== */
 
-:root {
-    --deep-purple: #14141f;
-    --accent-purple: #6c5ce7;
-    --button-blue: #5d6cf3;
-    --bg-light: #f6f6f9;
-    --white: #ffffff;
-    --text-dark: #14141f;
-    --text-muted: #57606f;
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+:root{
+
+    --deep-purple:#14141f;
+    --accent-purple:#6c5ce7;
+    --button-blue:#5d6cf3;
+
+    --white:#ffffff;
+    --bg-light:#f6f6f9;
+
+    --text-dark:#14141f;
+    --text-muted:#6b7280;
+
+    --border:#e5e7eb;
+
+    --shadow:0 10px 30px rgba(0,0,0,.08);
+
+    --radius:20px;
+
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* ==========================
+   RESET
+========================== */
+
+*{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
 }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, var(--bg-light) 0%, #e8e6f0 100%);
-    color: var(--text-dark);
+body{
+
+    font-family:'Poppins',sans-serif;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--bg-light),
+            #ece9f7
+        );
+
+    color:var(--text-dark);
+
 }
 
-/* ========= NAVBAR ========= */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 18px 8%;
-    background-color: var(--deep-purple);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+/* ==========================
+   NAVBAR
+========================== */
+
+.navbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:18px 8%;
+
+    background:var(--deep-purple);
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+
 }
 
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
+.logo{
+
+    color:white;
+
+    font-size:26px;
+
+    font-weight:700;
+
 }
 
-.logo-icon {
-    background-color: var(--accent-purple);
-    padding: 4px 12px;
-    border-radius: 50%;
-    margin-right: 10px;
-    display: inline-block;
-}
-.main-footer {
-    background-color: var(--deep-purple);
-    color: #a4b0be;
-    padding: 70px 8% 25px 8%;
+.logo-icon{
+
+    display:inline-flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    background:var(--accent-purple);
+
+    margin-right:12px;
+
 }
 
-.footer-container {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 40px;
-    padding-bottom: 40px;
-    border-bottom: 1px solid #2f3542;
+.nav-menu{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:40px;
+
 }
 
-.footer-brand,
-.footer-contact,
-.footer-hours {
-    flex: 1;
-    min-width: 250px;
+.nav-links{
+
+    display:flex;
+
+    list-style:none;
+
+    gap:30px;
+
 }
 
-.footer-container h3,
-.footer-container h4 {
-    color: white;
-    margin-bottom: 20px;
-}
+.nav-links a{
 
-.footer-container p {
-    margin-bottom: 10px;
-    font-size: 14px;
-}
+    text-decoration:none;
 
-.footer-bottom {
-    text-align: center;
-    padding-top: 25px;
-    font-size: 13px;
-    color: #747d8c;
-}
+    color:#b9bcc9;
 
-/* Knoppen in navbar */
-.nav-buttons {
-    display: flex;
-    gap: 12px;
-}
+    transition:.2s;
 
-.nav-buttons button {
-    padding: 9px 22px;
-    border-radius: 25px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.2s;
-}
-
-.btn-notifications,
-.btn-employee {
-    background-color: #f1f2f6;
-    color: #14141f;
-    transition: background-color 0.2s ease;
-}
-
-.btn-notifications:hover,
-.btn-employee:hover {
-    background-color: #e4e7eb;
-}
-
-.btn-login {
-    background-color: var(--accent-purple);
-    color: white;
-}
-
-.btn-register {
-    background-color: var(--button-blue);
-    color: white;
-}
-
-/* Navigatie links */
-.nav-menu {
-    display: flex;
-    align-items: center;
-    gap: 40px;
-}
-
-.nav-links {
-    display: flex;
-    list-style: none;
-    gap: 30px;
-}
-
-.nav-links a {
-    color: #a4b0be;
-    text-decoration: none;
-    transition: 0.3s;
 }
 
 .nav-links a:hover,
-.nav-links a.active {
-    color: white;
+.nav-links a.active{
+
+    color:white;
+
 }
 
-/* Hamburger menu (verstopt op desktop) */
-.menu-toggle {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    background: none;
-    border: none;
-    cursor: pointer;
+.nav-buttons{
+
+    display:flex;
+
+    gap:12px;
+
 }
 
-.menu-toggle .bar {
-    width: 30px;
-    height: 3px;
-    background-color: white;
-    border-radius: 3px;
-    transition: 0.3s;
+.nav-buttons button{
+
+    padding:10px 22px;
+
+    border:none;
+
+    border-radius:30px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.2s;
+
 }
 
-/* ========= CONTAINER ========= */
-.container {
-    max-width: 1100px;
-    margin: 40px auto;
-    background: var(--white);
-    border-radius: 28px;
-    padding: 40px;
-    box-shadow: var(--shadow);
+.btn-notifications,
+.btn-employee{
+
+    background:#f3f4f6;
+
+    color:var(--deep-purple);
+
 }
 
-/* HEADER */
-.header {
-    text-align: center;
-    margin-bottom: 35px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid var(--accent-purple);
+.btn-notifications:hover,
+.btn-employee:hover{
+
+    background:#e5e7eb;
+
 }
 
-.header h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 42px;
-    color: var(--deep-purple);
-}
-
-.header p {
-    color: var(--text-muted);
-    font-size: 16px;
-    margin-top: 10px;
-}
-
-/* ZOEKBALK */
-.zoek-section {
-    margin-bottom: 30px;
-      display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.zoek-form {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: var(--bg-light);
-    padding: 8px 20px;
-    border-radius: 60px;
-    border: 1px solid #e0dce8;
-    flex-wrap: wrap;
-}
-
-.zoek-form i {
-    color: var(--accent-purple);
-    font-size: 18px;
-}
-
-.zoek-form input {
-    flex: 1;
-    padding: 14px 0;
-    border: none;
-    outline: none;
-    font-size: 15px;
-    background: transparent;
-    font-family: 'Poppins', sans-serif;
-}
-
-.zoek-form button {
-    background: var(--accent-purple);
-    color: white;
-    border: none;
-    padding: 10px 28px;
-    border-radius: 40px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.2s;
-}
-
-.zoek-form button:hover {
-    background: var(--button-blue);
-}
-
-.wis-knop {
-    background: #e0dce8;
-    color: var(--text-dark);
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 40px;
-    font-size: 14px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.wis-knop:hover {
-    background: #ccc6dc;
-}
-.btn-add {
-    background-color: #6c5ce7;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 30px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-top: 15px;
-    transition: 0.2s;
-}
-
-.btn-add:hover {
-    background-color: #5d6cf3;
-}
-.zoek-actions {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-}
-
-.zoek-form {
-    flex: 1;
-}
-/* Bewerken knop */
-table .btn-edit {
-    background: #eef2ff;
-    color: #4f46e5;
-
-    border: none;
-    border-radius: 12px;
-
-    padding: 8px 16px;
-    min-width: 120px;
-    height: 40px;
-
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-table .btn-edit:hover {
-    background: #4f46e5;
-    color: white;
-}
 /* ==========================
-   NIEUWE MEDEWERKER MODAL
-   ========================== */
+   HAMBURGER
+========================== */
 
-.btn-add {
-    margin-top: 15px;
-    background: var(--accent-purple);
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 30px;
-    cursor: pointer;
-    font-weight: 600;
+.menu-toggle{
+
+    display:none;
+
+    flex-direction:column;
+
+    gap:5px;
+
+    background:none;
+
+    border:none;
+
+    cursor:pointer;
+
 }
 
-.btn-add:hover {
-    background: var(--button-blue);
+.menu-toggle .bar{
+
+    width:30px;
+
+    height:3px;
+
+    border-radius:3px;
+
+    background:white;
+
+    transition:.3s;
+
 }
 
-.modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.5);
-    z-index: 9999;
+/* ==========================
+   CONTAINER
+========================== */
+
+.container{
+
+    width:min(1100px,95%);
+
+    margin:40px auto;
+
+    background:white;
+
+    border-radius:30px;
+
+    padding:40px;
+
+    box-shadow:var(--shadow);
+
 }
 
-.modal.show {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* ==========================
+   HEADER
+========================== */
+
+.header{
+
+    text-align:center;
+
+    margin-bottom:35px;
+
+    padding-bottom:25px;
+
+    border-bottom:2px solid var(--accent-purple);
+
 }
 
-.modal-content {
-    background: white;
-    width: 500px;
-    max-width: 90%;
-    padding: 30px;
-    border-radius: 20px;
-    position: relative;
+.header h1{
+
+    font-family:'Playfair Display',serif;
+
+    font-size:48px;
+
+    color:var(--deep-purple);
+
 }
 
-.modal-content h2 {
-    margin-bottom: 20px;
+.header p{
+
+    margin-top:12px;
+
+    color:var(--text-muted);
+
+    font-size:17px;
+
 }
 
-.modal-content input {
-    width: 100%;
-    margin-bottom: 15px;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
+/* ======================================================
+   SEARCH
+====================================================== */
+
+.zoek-section{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+    margin-bottom:35px;
+
 }
 
-.modal-content button {
-    width: 100%;
-    padding: 12px;
-    background: var(--accent-purple);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
+.zoek-form{
+
+    flex:1;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:10px 20px;
+
+    background:#fafbff;
+
+    border:1px solid var(--border);
+
+    border-radius:50px;
+
 }
 
-.close {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 30px;
-    cursor: pointer;
+.zoek-form i{
+
+    color:var(--accent-purple);
+
+    font-size:18px;
+
 }
 
-/* TABEL */
-.tabel-container {
-    overflow-x: auto;
-    margin-bottom: 25px;
+.zoek-form input{
+
+    flex:1;
+
+    border:none;
+
+    outline:none;
+
+    background:transparent;
+
+    font-size:15px;
+
+    font-family:'Poppins',sans-serif;
+
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+.zoek-form button{
+
+    border:none;
+
+    background:var(--accent-purple);
+
+    color:white;
+
+    padding:12px 28px;
+
+    border-radius:30px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:.25s;
+
 }
 
-th {
-    background: var(--deep-purple);
-    color: white;
-    padding: 15px 12px;
-    text-align: left;
-    font-weight: 600;
+.zoek-form button:hover{
+
+    background:var(--button-blue);
+
 }
 
-td {
-    padding: 14px 12px;
-    border-bottom: 1px solid #eee;
-    vertical-align: middle;
+.wis-knop{
+
+    text-decoration:none;
+
+    color:var(--text-dark);
+
+    background:#ece9f7;
+
+    padding:10px 18px;
+
+    border-radius:25px;
+
+    transition:.2s;
+
 }
 
-tr:hover {
-    background: #f3f0ff;
+.wis-knop:hover{
+
+    background:#ddd6fe;
+
 }
 
-.naam-cell {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+/* ======================================================
+   BUTTONS
+====================================================== */
+
+.btn-add{
+
+    background:var(--accent-purple);
+
+    color:white;
+
+    border:none;
+
+    border-radius:30px;
+
+    padding:13px 24px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.25s;
+
 }
 
-.avatar-small {
-    width: 36px;
-    height: 36px;
-    background: var(--accent-purple);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
-    font-size: 14px;
+.btn-add:hover{
+
+    background:var(--button-blue);
+
 }
 
-.afdeling-badge {
-    background: #e8e0ff;
-    color: var(--accent-purple);
-    padding: 5px 14px;
-    border-radius: 30px;
-    font-size: 12px;
-    font-weight: 600;
-    display: inline-block;
+/* Bewerken */
+
+.btn-edit{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:8px;
+
+    width:120px;
+
+    height:40px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#eef2ff;
+
+    color:#4f46e5;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.2s;
+
 }
 
-.geen-data {
-    text-align: center;
-    padding: 40px;
-    color: var(--text-muted);
+.btn-edit:hover{
+
+    background:#4f46e5;
+
+    color:white;
+
+}
+
+/* Verwijderen */
+
+.btn-delete{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:8px;
+
+    width:120px;
+
+    height:40px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#fff2f2;
+
+    color:#ef4444;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.btn-delete:hover{
+
+    background:#ef4444;
+
+    color:white;
+
+}
+
+.action-buttons{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+/* ======================================================
+   TABLE
+====================================================== */
+
+.tabel-container{
+
+    overflow-x:auto;
+
+    border-radius:18px;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+thead{
+
+    background:var(--deep-purple);
+
+}
+
+th{
+
+    padding:18px;
+
+    color:white;
+
+    text-align:left;
+
+    font-size:15px;
+
+    font-weight:600;
+
+}
+
+td{
+
+    padding:18px;
+
+    border-bottom:1px solid #ececec;
+
+    vertical-align:middle;
+
+}
+
+tbody tr{
+
+    transition:.2s;
+
+}
+
+tbody tr:hover{
+
+    background:#faf9ff;
+
+}
+
+.naam-cell{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+.avatar-small{
+
+    width:42px;
+
+    height:42px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:50%;
+
+    background:var(--accent-purple);
+
+    color:white;
+
+    font-weight:700;
+
+}
+
+.afdeling-badge{
+
+    display:inline-block;
+
+    padding:6px 16px;
+
+    border-radius:25px;
+
+    background:#efe7ff;
+
+    color:#6c5ce7;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.geen-data{
+
+    text-align:center;
+
+    padding:60px;
+
+    color:var(--text-muted);
+
+}
+
+/* ======================================================
+   STATS
+====================================================== */
+
+.stats{
+
+    margin-top:25px;
+
+    padding:18px;
+
+    background:#f5f4ff;
+
+    border-radius:16px;
+
+    text-align:center;
+
+}
+
+.stats p{
+
+    font-size:16px;
+
+    color:var(--deep-purple);
+
 }
 
 /* STATISTIEK */
@@ -565,6 +769,285 @@ tr:hover {
     font-size: 14px;
     background: white;
     cursor: pointer;
+}
+/* ======================================================
+   MODALS
+====================================================== */
+
+.modal{
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:rgba(20,20,31,.55);
+
+    backdrop-filter:blur(3px);
+
+    z-index:9999;
+
+    animation:fadeIn .25s ease;
+
+}
+
+.modal.show{
+
+    display:flex;
+
+}
+
+/* ========================= */
+
+.modal-content{
+
+    position:relative;
+
+    width:700px;
+
+    max-width:92%;
+
+    background:white;
+
+    border-radius:24px;
+
+    padding:40px;
+
+    box-shadow:
+        0 25px 60px rgba(0,0,0,.18);
+
+}
+
+/* ========================= */
+
+.modal-content h2{
+
+    font-family:'Playfair Display',serif;
+
+    font-size:34px;
+
+    color:var(--deep-purple);
+
+    margin-bottom:30px;
+
+}
+
+/* ========================= */
+
+.close,
+.close-edit{
+
+    position:absolute;
+
+    right:28px;
+
+    top:22px;
+
+    width:38px;
+
+    height:38px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:50%;
+
+    font-size:26px;
+
+    color:#8b8b98;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.close:hover,
+.close-edit:hover{
+
+    background:#f3f4f6;
+
+    color:var(--deep-purple);
+
+}
+
+/* ========================= */
+
+.modal-content form{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+/* ========================= */
+
+.modal-content label{
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:#4b5563;
+
+    margin-bottom:8px;
+
+    margin-top:18px;
+
+}
+
+/* ========================= */
+
+.modal-content input,
+.modal-content select{
+
+    width:100%;
+
+    height:54px;
+
+    padding:0 18px;
+
+    border:1px solid #d9dce5;
+
+    border-radius:14px;
+
+    font-size:15px;
+
+    font-family:'Poppins',sans-serif;
+
+    transition:.2s;
+
+}
+
+/* ========================= */
+
+.modal-content input:focus,
+.modal-content select:focus{
+
+    outline:none;
+
+    border-color:var(--accent-purple);
+
+    box-shadow:
+        0 0 0 3px rgba(108,92,231,.12);
+
+}
+
+/* ========================= */
+
+.modal-content input::placeholder{
+
+    color:#a0a6b2;
+
+}
+
+/* ========================= */
+
+.modal-buttons{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:15px;
+
+    margin-top:35px;
+
+}
+
+/* ========================= */
+
+.btn-cancel{
+
+    width:160px;
+
+    height:52px;
+
+    border-radius:14px;
+
+    border:1px solid #d9dce5;
+
+    background:white;
+
+    color:#555;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.btn-cancel:hover{
+
+    background:#f8f8f8;
+
+}
+
+/* ========================= */
+
+.btn-save{
+
+    width:180px;
+
+    height:52px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:var(--accent-purple);
+
+    color:white;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.btn-save:hover{
+
+    background:var(--button-blue);
+
+}
+
+/* ========================= */
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:scale(.96);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
 }
 
 /* ========= RESPONSIVE - TELEFOON ========= */

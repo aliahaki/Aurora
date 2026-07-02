@@ -362,21 +362,23 @@ if ($db_beschikbaar) {
     <!-- Knoppen -->
     <div class="modal-buttons">
 
-        <button
-            type="button">
+    <button
+        type="button"
+        class="btn-cancel">
 
-            Annuleren
+        Annuleren
 
-        </button>
+    </button>
 
-        <button
-            type="submit">
+    <button
+        type="submit"
+        class="btn-save">
 
-            Opslaan
+        Opslaan
 
-        </button>
+    </button>
 
-    </div>
+</div>
 
 </form>
 
