@@ -884,3 +884,9 @@ h4 {
     font-size: 14px;
     font-weight: 600;
 }
+
+.alert-danger {
+    background-color: #fee2e2;
+    color: #ef4444;
+    border: 1px solid #fca5a5;
+}
