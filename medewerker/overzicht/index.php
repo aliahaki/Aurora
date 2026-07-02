@@ -192,6 +192,8 @@ if ($db_beschikbaar) {
                             <th>Naam</th>
                             <th>Functie</th>
                             <th>Afdeling</th>
+                            <!--Actieknoppen-->
+                            <th>Acties</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -204,6 +206,17 @@ if ($db_beschikbaar) {
                                 </td>
                                 <td><?php echo htmlspecialchars($rij['functie']); ?></td>
                                 <td><span class="afdeling-badge"><?php echo htmlspecialchars($rij['afdeling']); ?></span></td>
+                                                        <td>
+    <!-- Bewerken knop -->
+    <button type="button" class="btn-edit">
+    ✏️ Wijzigen
+</button>
+
+    <!-- Verwijderen knop -->
+    <button class="btn-delete">
+        🗑️ Verwijderen
+    </button>
+</td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
@@ -308,6 +321,68 @@ if ($db_beschikbaar) {
     </div>
 
 </div>
+
+</div>
+    <!-- Bewerken Modal -->
+<div id="editModal" class="modal">
+
+    <div class="modal-content">
+
+        <!-- Sluitknop -->
+        <span class="close-edit">&times;</span>
+
+        <h2>Medewerker Bewerken</h2>
+        <form>
+
+    <!-- Naam -->
+    <label>Volledige naam</label>
+
+    <input
+        type="text"
+        placeholder="Naam">
+
+    <!-- Functie -->
+    <label>Functie</label>
+
+    <input
+        type="text"
+        placeholder="Functie">
+
+    <!-- Afdeling -->
+    <label>Afdeling</label>
+
+    <select>
+
+        <option>Kassa</option>
+        <option>Techniek</option>
+        <option>Marketing</option>
+
+    </select>
+
+    <!-- Knoppen -->
+    <div class="modal-buttons">
+
+    <button
+        type="button"
+        class="btn-cancel">
+
+        Annuleren
+
+    </button>
+
+    <button
+        type="submit"
+        class="btn-save">
+
+        Opslaan
+
+    </button>
+
+</div>
+
+</form>
+
+    </div>
 <!-- Javascript voor hamburger menu -->
 <script>
     // Hamburger menu
@@ -376,6 +451,47 @@ if (window.location.search.includes('success=1') ||
 
     window.history.replaceState({}, '', url);
 }
+// ================================
+// Bewerken modal openen/sluiten
+// ================================
+
+// Alle wijzigknoppen
+const editButtons = document.querySelectorAll('.btn-edit');
+
+// Bewerken modal
+const editModal = document.getElementById('editModal');
+
+// Sluitknop
+const closeEdit = document.querySelector('.close-edit');
+
+// Open modal
+editButtons.forEach(button => {
+
+    button.addEventListener('click', () => {
+
+        editModal.classList.add("show");
+
+    });
+
+});
+
+// Sluiten via kruisje
+closeEdit.addEventListener('click', () => {
+
+    editModal.classList.remove("show");
+
+});
+
+// Sluiten buiten het venster
+window.addEventListener('click', (e) => {
+
+    if (e.target === editModal) {
+
+        editModal.classList.remove("show");
+
+    }
+
+});
 
 
 </script>
