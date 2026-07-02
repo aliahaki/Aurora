@@ -1,7 +1,7 @@
 CREATE DATABASE aurora_theater;
 USE aurora_theater;
 
-CREATE TABLE medewerkers (
+CREATE TABLE medewerkers11 (
     id INT AUTO_INCREMENT PRIMARY KEY,
     naam VARCHAR(100) NOT NULL,
     functie VARCHAR(100) NOT NULL,

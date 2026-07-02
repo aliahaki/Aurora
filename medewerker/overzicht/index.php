@@ -192,7 +192,20 @@ if ($db_beschikbaar) {
                             <th>Naam</th>
                             <th>Functie</th>
                             <th>Afdeling</th>
+                            <!--Actieknoppen-->
+                            <th>Acties</th>
                         </tr>
+                        <td>
+    <!-- Bewerken knop -->
+    <button class="btn-edit">
+        ✏️ Wijzigen
+    </button>
+
+    <!-- Verwijderen knop -->
+    <button class="btn-delete">
+        🗑️ Verwijderen
+    </button>
+</td>
                     </thead>
                     <tbody>
                         <?php while($rij = mysqli_fetch_assoc($resultaat)): ?>
