@@ -1049,7 +1049,55 @@ tbody tr:hover{
     }
 
 }
+/* ==========================================
+   DELETE MODAL
+========================================== */
 
+.delete-modal{
+
+    max-width:520px;
+
+    text-align:center;
+
+}
+
+.delete-icon{
+
+    width:80px;
+
+    height:80px;
+
+    margin:0 auto 25px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#fff2f2;
+
+    font-size:42px;
+
+}
+
+.delete-modal h2{
+
+    margin-bottom:15px;
+
+}
+
+.delete-modal p{
+
+    color:#6b7280;
+
+    line-height:1.6;
+
+    margin-bottom:35px;
+
+}
 /* ========= RESPONSIVE - TELEFOON ========= */
 @media (max-width: 768px) {
     /* Гамбургер справа */

@@ -383,6 +383,55 @@ if ($db_beschikbaar) {
 </form>
 
     </div>
+    <!-- ==========================================
+     Verwijder medewerker modal
+========================================== -->
+
+<div id="deleteModal" class="modal">
+
+    <div class="modal-content delete-modal">
+
+        <!-- Sluitknop -->
+        <span class="close-delete">&times;</span>
+
+        <!-- Waarschuwing -->
+        <div class="delete-icon">
+
+            🗑️
+
+        </div>
+
+        <h2>Medewerker verwijderen</h2>
+
+        <p>
+
+            Weet je zeker dat je deze medewerker wilt verwijderen?
+
+        </p>
+
+        <div class="modal-buttons">
+
+            <button
+                type="button"
+                class="btn-cancel-delete">
+
+                Annuleren
+
+            </button>
+
+            <button
+                type="button"
+                class="btn-confirm-delete">
+
+                Verwijderen
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 <!-- Javascript voor hamburger menu -->
 <script>
     // Hamburger menu
