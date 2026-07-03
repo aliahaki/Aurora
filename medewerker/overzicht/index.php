@@ -144,6 +144,31 @@ if ($db_beschikbaar) {
     ❌ Database niet beschikbaar. Probeer later opnieuw.
 </div>
 <?php endif; ?>
+<?php if (isset($_GET['updated'])): ?>
+<div class="toast-success" id="toast">
+    Medewerker succesvol gewijzigd.
+</div>
+<?php endif; ?>
+
+<?php if (isset($_GET['updateError'])): ?>
+<div class="toast-error" id="toast">
+    De medewerker kan momenteel niet worden gewijzigd.
+    Probeer het later opnieuw.
+</div>
+<?php endif; ?>
+
+<?php if (isset($_GET['deleted'])): ?>
+<div class="toast-success" id="toast">
+    Medewerker succesvol verwijderd.
+</div>
+<?php endif; ?>
+
+<?php if (isset($_GET['deleteError'])): ?>
+<div class="toast-error" id="toast">
+    De medewerker kan momenteel niet worden verwijderd.
+    Probeer het later opnieuw.
+</div>
+<?php endif; ?>
     <!-- Titel -->
     <div class="header">
         <h1><span class="logo-icon">A</span> Aurora Theater</h1>
