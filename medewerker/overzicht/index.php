@@ -29,6 +29,39 @@ if (isset($_POST['toevoegen'])) {
     exit();
 }
 }
+// ==========================================
+// Medewerker wijzigen
+// ==========================================
+
+if (isset($_POST['wijzigen'])) {
+
+    $id = (int) $_POST['id'];
+
+    $naam = $_POST['naam'];
+    $functie = $_POST['functie'];
+    $afdeling = $_POST['afdeling'];
+
+    $sql = "UPDATE medewerkers
+            SET naam='$naam',
+                functie='$functie',
+                afdeling='$afdeling'
+            WHERE id=$id";
+
+    try {
+
+        mysqli_query($conn, $sql);
+
+        header("Location: index.php?updated=1");
+        exit();
+
+    } catch (Exception $e) {
+
+        header("Location: index.php?updateError=1");
+        exit();
+
+    }
+
+}
 // Medewerker succesvol toegevoegd, pagina opnieuw laden
 // header("Location: index.php?success=1");
 //    if (mysqli_query($conn, $sql)) {
@@ -233,8 +266,17 @@ if ($db_beschikbaar) {
                                 <td><span class="afdeling-badge"><?php echo htmlspecialchars($rij['afdeling']); ?></span></td>
                                                         <td>
     <!-- Bewerken knop -->
-    <button type="button" class="btn-edit">
+   <button
+    type="button"
+    class="btn-edit"
+
+    data-id="<?php echo $rij['id']; ?>"
+    data-naam="<?php echo htmlspecialchars($rij['naam']); ?>"
+    data-functie="<?php echo htmlspecialchars($rij['functie']); ?>"
+    data-afdeling="<?php echo htmlspecialchars($rij['afdeling']); ?>">
+
     ✏️ Wijzigen
+
 </button>
 
     <!-- Verwijderen knop -->
@@ -360,30 +402,36 @@ if ($db_beschikbaar) {
         <span class="close-edit">&times;</span>
 
         <h2>Medewerker Bewerken</h2>
-        <form>
-
+        <form method="POST">
+   <input
+        type="hidden"
+        id="editId"
+        name="id">
     <!-- Naam -->
     <label>Volledige naam</label>
 
     <input
-        type="text"
-        placeholder="Naam">
-
+    type="text"
+    id="editNaam"
+    name="naam"
+    placeholder="Naam">
     <!-- Functie -->
     <label>Functie</label>
 
     <input
         type="text"
+        id="editFunctie"
+        name="functie"
         placeholder="Functie">
 
     <!-- Afdeling -->
     <label>Afdeling</label>
 
-    <select>
+    <select id="editAfdeling" name="afdeling">
 
-        <option>Kassa</option>
-        <option>Techniek</option>
-        <option>Marketing</option>
+        <option value="Kassa">Kassa</option>
+        <option value="Techniek">Techniek</option>
+        <option value="Marketing">Marketing</option>
 
     </select>
 
@@ -399,8 +447,9 @@ if ($db_beschikbaar) {
     </button>
 
     <button
-        type="submit"
-        class="btn-save">
+    type="submit"
+    name="wijzigen"
+    class="btn-save">
 
         Opslaan
 
@@ -545,8 +594,25 @@ const closeEdit = document.querySelector('.close-edit');
 // Open modal
 editButtons.forEach(button => {
 
-    button.addEventListener('click', () => {
+    button.addEventListener("click", () => {
 
+        // ID
+        document.getElementById("editId").value =
+            button.dataset.id;
+
+        // Naam
+        document.getElementById("editNaam").value =
+            button.dataset.naam;
+
+        // Functie
+        document.getElementById("editFunctie").value =
+            button.dataset.functie;
+
+        // Afdeling
+        document.getElementById("editAfdeling").value =
+            button.dataset.afdeling;
+
+        // Modal openen
         editModal.classList.add("show");
 
     });
