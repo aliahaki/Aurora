@@ -5,21 +5,19 @@
 // ==========================================================================
 class Database
 {
+    // PAS HIER DE NAAM AAN VOOR JE TEST (bv. 'aurora_theater_FOUT')
     private string $host = '127.0.0.1';
     private string $dbname = 'aurora_theater';
     private string $username = 'root';
     private string $password = '';
-    public ?PDO $conn = null; // Hierin slaan we de active verbinding op
+    public ?PDO $conn = null;
 
-    // De constructor start automatisch zodra we 'new Database()' aanroepen
     public function __construct()
     {
         try {
             $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->dbname . ";charset=utf8", $this->username, $this->password);
-            // CRUCIAAL: Dit zorgt ervoor dat PDO échte fouten (Exceptions) gooit als phpMyAdmin faalt
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            // Als de verbinding mislukt, blijft $conn leeg (null)
             $this->conn = null;
         }
     }
@@ -33,7 +31,6 @@ class NotificationManager
 {
     private ?PDO $db;
 
-    // We geven de database-verbinding mee via de constructor
     public function __construct(?PDO $databaseConnection)
     {
         $this->db = $databaseConnection;
@@ -46,7 +43,6 @@ class NotificationManager
             return [];
         }
 
-        // SQL-query met de komma's netjes aan het begin van de regel
         $query = "SELECT id
                        , title
                        , message
@@ -67,9 +63,8 @@ class NotificationManager
             return false;
         }
 
-        $created_at = date('Y-m-d'); // Pakt de datum van vandaag
+        $created_at = date('Y-m-d');
 
-        // SQL-query om data in tevoegen met komma's aan het begin
         $query = "INSERT INTO notifications (title
                                            , message
                                            , type
@@ -88,6 +83,24 @@ class NotificationManager
         ]);
     }
 
+    // FUNCTIE: Wijzig type van 'Concept' naar 'Info' (versturen)
+    public function sendNotification(int $id, string $newType = 'Info'): bool
+    {
+        if ($this->db === null) {
+            return false;
+        }
+
+        $query = "UPDATE notifications 
+                  SET type = :type 
+                  WHERE id = :id";
+
+        $stmt = $this->db->prepare($query);
+        return $stmt->execute([
+            ':type' => $newType,
+            ':id' => $id
+        ]);
+    }
+
     // FUNCTIE: Verwijder een melding uit de database met het ID
     public function deleteNotification(int $id): bool
     {
@@ -95,7 +108,6 @@ class NotificationManager
             return false;
         }
 
-        // SQL-query om 1 specifieke rij te wissen
         $query = "DELETE FROM notifications 
                   WHERE id = :id";
 
@@ -107,29 +119,26 @@ class NotificationManager
 }
 
 // ==========================================================================
-// 3. APPLICATIE LOGICA (HETWERKBOEK VAN PHP)
+// 3. APPLICATIE LOGICA (HET WERKBOEK VAN PHP)
 // Hier verwerken we de formulieren als er op een knop wordt gedrukt.
 // ==========================================================================
 $database = new Database();
 $notificationManager = new NotificationManager($database->conn);
 
-// Als $conn null is, zetten we de systeemfout op true
 $systeemFout = ($database->conn === null);
 $notifications = [];
 
-// HIER VANGEN WE DE FOUT OP ALS DE TABELNAAM IS VERANDERD IN PHPMYADMIN
 try {
     // Controleren of er een formulier (POST-request) wordt verstuurd
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
-        // ACTIE 1: Er is op de knop "Melding Versturen" gedrukt
+        // ACTIE 1: Nieuwe melding aanmaken (Vorige Sprint)
         if ($_POST['action'] === 'new_notification') {
             $title = trim($_POST['title']);
             $message = trim($_POST['message']);
             $type = 'Concept';
 
             if (!empty($title) && !empty($message)) {
-                // Als de database vooraf al stuk was, sturen we DIRECT door naar de error pagina
                 if ($systeemFout) {
                     header("Location: meldingen.php?error=db");
                     exit();
@@ -137,38 +146,64 @@ try {
 
                 try {
                     $success = $notificationManager->createNotification($title, $message, $type);
-                    
                     if ($success) {
                         header("Location: meldingen.php?success=1");
                         exit();
                     } else {
-                        // Als createNotification 'false' teruggeeft (omdat db null is)
                         header("Location: meldingen.php?error=db");
                         exit();
                     }
                 } catch (Exception $e) {
-                    // Als er tijdens het uitvoeren een database-fout komt (bijv. tabelnaam fout)
                     header("Location: meldingen.php?error=db");
                     exit();
                 }
             }
         }
 
-        // ACTIE 2: Er is op een prullenbak-knop gedrukt om te verwijderen
-        if ($_POST['action'] === 'delete_notification' && isset($_POST['id']) && !$systeemFout) {
+        // ACTIE 2: Concept ECHT Versturen (User Story 9)
+        if ($_POST['action'] === 'send_notification' && isset($_POST['id'])) {
+            $sendId = intval($_POST['id']);
+
+            // Als de database onbereikbaar is, sturen we door met error send_failed
+            if ($systeemFout) {
+                header("Location: meldingen.php?error=send_failed");
+                exit();
+            }
+
+            try {
+                $success = $notificationManager->sendNotification($sendId, 'Info');
+                if ($success === false) {
+                    header("Location: meldingen.php?error=send_failed");
+                    exit();
+                }
+                header("Location: meldingen.php?success=sent");
+                exit();
+            } catch (Exception $e) {
+                header("Location: meldingen.php?error=send_failed");
+                exit();
+            }
+        }
+
+        // ACTIE 3: Verwijderen van een melding
+        if ($_POST['action'] === 'delete_notification' && isset($_POST['id'])) {
             $deleteId = intval($_POST['id']);
+
+            if ($systeemFout) {
+                header("Location: meldingen.php?error=db");
+                exit();
+            }
+
             $notificationManager->deleteNotification($deleteId);
-            header("Location: meldingen.php"); // Ook netjes redirecten na verwijderen!
+            header("Location: meldingen.php");
             exit();
         }
     }
 
-    // Als er geen database-fout is, halen we direct de nieuwste lijst met meldingen op
+    // Als er geen database-fout is, halen we de meldingen op
     if (!$systeemFout) {
         $notifications = $notificationManager->getAllNotifications();
     }
 } catch (PDOException $e) {
-    // Als phpMyAdmin zegt "Tabel bestaat niet", activeren we hier de systeemfout!
     $systeemFout = true;
 }
 ?>
@@ -229,47 +264,77 @@ try {
     <main class="notifications-container">
         <h1 style="text-align: center; margin-bottom: 40px; font-size: 48px;">Meldingen</h1>
 
-         <h2 style="font-size: 28px; margin-bottom: 25px; font-family: 'Playfair Display', serif; color: #6366f1;">Mijn Opgestelde Concepten</h2>
-            <div style="margin-bottom: 40px;">
-                 <?php 
-                $heeftConcepten = false;
-                if (!$systeemFout && !empty($notifications)): 
-                    foreach ($notifications as $notif): 
-                        if ($notif['type'] === 'Concept'): 
-                            $heeftConcepten = true;
-             ?>
-                <div class="card-notification info" style="border-left: 5px solid #6366f1; margin-bottom: 15px;">
-                                <div class="card-body-content">
-                                    <div class="card-title-row">
-                                         <div style="display: flex; align-items: center; gap: 10px;">
-                                            <h3 style="font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 18px; margin: 0;"><?php echo htmlspecialchars($notif['title']); ?></h3>
-                                            <span class="badge" style="background-color: #6366f1; color: white; padding: 3px 8px; border-radius: 10px; font-size: 12px;">Concept</span>
-                                     </div>
-                                </div>
-                                    <p class="card-message" style="margin-top: 8px; color: #475569;"><?php echo htmlspecialchars($notif['message']); ?></p>
-                                    <span style="font-size: 12px; color: #94a3b8;">Nog niet verzonden</span>
-                                </div>
-                            </div>
-                             <?php 
-                        endif;
-                    endforeach; 
-                endif; 
-                
-                if (!$heeftConcepten): ?>
-                    <p style="color: #94a3b8; font-style: italic;">Er zijn momenteel geen concepten opgesteld.</p>
-                <?php endif; ?>
+        <?php if (isset($_GET['error']) && $_GET['error'] === 'send_failed'): ?>
+            <div class="alert alert-danger">
+                De melding kon niet worden verstuurd omdat de database niet beschikbaar is. Probeer het later opnieuw.
             </div>
+        <?php endif; ?>
 
-            <hr style="border: 0; height: 1px; background: #e2e8f0; margin-bottom: 40px;">
+        <?php if (isset($_GET['success']) && $_GET['success'] === 'sent'): ?>
+            <div class="alert alert-success">
+                De melding is succesvol verstuurd en definitief gemaakt!
+            </div>
+        <?php endif; ?>
 
-       <div style="margin-bottom: 50px;">
+        <h2 style="font-size: 28px; margin-bottom: 25px; font-family: 'Playfair Display', serif; color: #6366f1;">Mijn Opgestelde Concepten</h2>
+        <div style="margin-bottom: 40px;">
+            <?php
+            $heeftConcepten = false;
+            if (!$systeemFout && !empty($notifications)):
+                foreach ($notifications as $notif):
+                    if ($notif['type'] === 'Concept'):
+                        $heeftConcepten = true;
+            ?>
+                        <div class="card-notification concept-item" style="border: 1px dashed #b4b6f9; margin-bottom: 25px; background: #fff; padding: 24px; border-radius: 12px; position: relative;">
+                            <div class="card-body-content" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+
+                                <div style="display: flex; flex-direction: column; gap: 6px;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <span class="badge" style="background-color: #eef2ff; color: #6366f1; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; font-family: 'Poppins', sans-serif;">Nog niet verzonden</span>
+                                        <span style="font-size: 13px; color: #94a3b8; font-family: 'Poppins', sans-serif;">22 juni 2026</span>
+                                    </div>
+
+                                    <h3 style="font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 18px; margin: 4px 0 0 0; color: #1e293b;"><?php echo htmlspecialchars($notif['title']); ?></h3>
+
+                                    <p class="card-message" style="margin: 2px 0 0 0; color: #64748b; font-size: 14px; font-family: 'Poppins', sans-serif;"><?php echo htmlspecialchars($notif['message']); ?></p>
+                                </div>
+
+                                <div style="display: flex; align-items: center; gap: 12px; flex-shrink: 0;">
+                                    <form action="meldingen.php" method="POST" style="margin: 0;">
+                                        <input type="hidden" name="action" value="send_notification">
+                                        <input type="hidden" name="id" value="<?php echo $notif['id']; ?>">
+                                        <button type="submit" style="background-color: #6366f1; color: white; border: none; padding: 10px 24px; border-radius: 24px; font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 14px; cursor: pointer; transition: background 0.2s; shadow: 0 2px 4px rgba(99, 102, 241, 0.2);">Versturen</button>
+                                    </form>
+
+                                    <form action="meldingen.php" method="POST" onsubmit="return confirm('Weet je zeker dat je dit concept wilt verwijderen?');" style="margin: 0;">
+                                        <input type="hidden" name="action" value="delete_notification">
+                                        <input type="hidden" name="id" value="<?php echo $notif['id']; ?>">
+                                        <button type="submit" style="background-color: white; color: #64748b; border: 1px solid #e2e8f0; padding: 10px 24px; border-radius: 24px; font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 14px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#cbd5e1'; this.style.color='#334155';" onmouseout="this.style.borderColor='#e2e8f0'; this.style.color='#64748b';">Verwijderen</button>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                <?php
+                    endif;
+                endforeach;
+            endif;
+
+            if (!$heeftConcepten): ?>
+                <p style="color: #94a3b8; font-style: italic;">Er zijn momenteel geen concepten opgesteld.</p>
+            <?php endif; ?>
+        </div>
+
+        <hr style="border: 0; height: 1px; background: #e2e8f0; margin-bottom: 40px;">
+
+        <div style="margin-bottom: 50px;">
             <h2 style="font-size: 28px; margin-bottom: 25px; font-family: 'Playfair Display', serif;">Recente Meldingen</h2>
 
             <?php if (!$systeemFout && !empty($notifications)): ?>
                 <?php foreach ($notifications as $notif):
                     // Sla concepten hier over zodat ze alleen in de bovenste lijst staan!
                     if ($notif['type'] === 'Concept') {
-                        continue; 
+                        continue;
                     }
 
                     // Bepaal de juiste CSS-klas en FontAwesome-icoon op basis van het type melding
@@ -337,7 +402,7 @@ try {
                 <p>Er zijn momenteel geen meldingen beschikbaar of er is een databasefout.</p>
             <?php endif; ?>
         </div>
-       <div class="form-card">
+        <div class="form-card">
             <h2>Nieuwe Melding Maken</h2>
 
             <?php if (isset($_POST['action']) && $_POST['action'] === 'new_notification' && !$systeemFout): ?>
@@ -405,6 +470,18 @@ try {
             <p>&copy; 2026 Aurora Theater. Alle rechten voorbehouden.</p>
         </div>
     </footer>
+
+    <script>
+        // Zodra de pagina is geladen, halen we de 'error' of 'success' parameter stilletjes weg uit de URL
+        if (window.history.replaceState) {
+            const url = new URL(window.location.href);
+            url.searchParams.delete('error');
+            url.searchParams.delete('success');
+            window.history.replaceState({
+                path: url.href
+            }, '', url.href);
+        }
+    </script>
 
     <script src="js/main.js"></script>
 </body>
