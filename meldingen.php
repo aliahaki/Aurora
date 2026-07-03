@@ -98,9 +98,13 @@ class NotificationManager
         $query = "UPDATE notifications 
                   SET type = :type 
                   WHERE id = :id";
-                  
-        $stmt = $this->db->prepare($query);          
 
+        $stmt = $this->db->prepare($query);  
+        return $stmt->execute([
+            ':type' => $newType,
+            ':id' => $id
+        ]);
+    }        
 
     // FUNCTIE: Verwijder een melding uit de database met het ID
     public function deleteNotification(int $id): bool
