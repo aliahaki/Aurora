@@ -213,9 +213,14 @@ if ($db_beschikbaar) {
 </button>
 
     <!-- Verwijderen knop -->
-    <button class="btn-delete">
-        🗑️ Verwijderen
-    </button>
+   <button
+    type="button"
+    class="btn-delete"
+    data-id="<?php echo $rij['id']; ?>">
+
+    🗑️ Verwijderen
+
+</button>
 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -321,8 +326,6 @@ if ($db_beschikbaar) {
     </div>
 
 </div>
-
-</div>
     <!-- Bewerken Modal -->
 <div id="editModal" class="modal">
 
@@ -382,6 +385,7 @@ if ($db_beschikbaar) {
 
 </form>
 
+    </div>
     </div>
     <!-- ==========================================
      Verwijder medewerker modal
@@ -541,9 +545,12 @@ window.addEventListener('click', (e) => {
     }
 
 });
-// =========================================
+/// =========================================
 // Verwijder modal
 // =========================================
+
+// Geselecteerde medewerker
+let medewerkerId = null;
 
 // Alle verwijder knoppen
 const deleteButtons =
@@ -558,27 +565,55 @@ const closeDelete =
 document.querySelector(".close-delete");
 
 // Openen
-deleteButtons.forEach(button=>{
+deleteButtons.forEach(button => {
 
-    button.addEventListener("click",()=>{
+    button.addEventListener("click", () => {
+
+        medewerkerId = button.dataset.id;
 
         deleteModal.classList.add("show");
 
     });
 
 });
+// =========================================
+// Sluitknop
+// =========================================
 
-// Kruisje
-closeDelete.addEventListener("click",()=>{
+if (closeDelete) {
 
-    deleteModal.classList.remove("show");
+    closeDelete.addEventListener("click", () => {
 
-});
+        deleteModal.classList.remove("show");
 
-// Buiten klikken
-window.addEventListener("click",(e)=>{
+    });
 
-    if(e.target===deleteModal){
+}
+
+// =========================================
+// Annuleren knop
+// =========================================
+
+const cancelDelete =
+document.querySelector(".btn-cancel-delete");
+
+if (cancelDelete) {
+
+    cancelDelete.addEventListener("click", () => {
+
+        deleteModal.classList.remove("show");
+
+    });
+
+}
+
+// =========================================
+// Buiten de modal klikken
+// =========================================
+
+window.addEventListener("click", (e) => {
+
+    if (e.target === deleteModal) {
 
         deleteModal.classList.remove("show");
 
@@ -586,6 +621,27 @@ window.addEventListener("click",(e)=>{
 
 });
 
+// =========================================
+// Verwijderen bevestigen
+// =========================================
+
+const confirmDelete =
+document.querySelector(".btn-confirm-delete");
+
+if (confirmDelete) {
+
+    confirmDelete.addEventListener("click", () => {
+
+        if (medewerkerId !== null) {
+
+            window.location =
+                "verwijderen.php?id=" + medewerkerId;
+
+        }
+
+    });
+
+}
 
 </script>
 </body>
