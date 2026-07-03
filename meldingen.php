@@ -5,21 +5,19 @@
 // ==========================================================================
 class Database
 {
+    // PAS HIER DE NAAM AAN VOOR JE TEST (bv. 'aurora_theater_FOUT')
     private string $host = '127.0.0.1';
     private string $dbname = 'aurora_theater';
     private string $username = 'root';
     private string $password = '';
-    public ?PDO $conn = null; // Hierin slaan we de active verbinding op
+    public ?PDO $conn = null;
 
-    // De constructor start automatisch zodra we 'new Database()' aanroepen
     public function __construct()
     {
         try {
             $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->dbname . ";charset=utf8", $this->username, $this->password);
-            // CRUCIAAL: Dit zorgt ervoor dat PDO échte fouten (Exceptions) gooit als phpMyAdmin faalt
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            // Als de verbinding mislukt, blijft $conn leeg (null)
             $this->conn = null;
         }
     }
@@ -33,7 +31,6 @@ class NotificationManager
 {
     private ?PDO $db;
 
-    // We geven de database-verbinding mee via de constructor
     public function __construct(?PDO $databaseConnection)
     {
         $this->db = $databaseConnection;
@@ -46,7 +43,6 @@ class NotificationManager
             return [];
         }
 
-        // SQL-query met de komma's netjes aan het begin van de regel
         $query = "SELECT id
                        , title
                        , message
@@ -67,9 +63,8 @@ class NotificationManager
             return false;
         }
 
-        $created_at = date('Y-m-d'); // Pakt de datum van vandaag
+        $created_at = date('Y-m-d');
 
-        // SQL-query om data in tevoegen met komma's aan het begin
         $query = "INSERT INTO notifications (title
                                            , message
                                            , type
@@ -88,7 +83,7 @@ class NotificationManager
         ]);
     }
 
-    // NIEUWE FUNCTIE USER STORY 9: Wijzig type van 'Concept' naar 'Info' (versturen)
+    // FUNCTIE: Wijzig type van 'Concept' naar 'Info' (versturen)
     public function sendNotification(int $id, string $newType = 'Info'): bool
     {
         if ($this->db === null) {
@@ -113,7 +108,6 @@ class NotificationManager
             return false;
         }
 
-        // SQL-query om 1 specifieke rij te wissen
         $query = "DELETE FROM notifications 
                   WHERE id = :id";
 
@@ -125,29 +119,26 @@ class NotificationManager
 }
 
 // ==========================================================================
-// 3. APPLICATIE LOGICA (HETWERKBOEK VAN PHP)
+// 3. APPLICATIE LOGICA (HET WERKBOEK VAN PHP)
 // Hier verwerken we de formulieren als er op een knop wordt gedrukt.
 // ==========================================================================
 $database = new Database();
 $notificationManager = new NotificationManager($database->conn);
 
-// Als $conn null is, zetten we de systeemfout op true
 $systeemFout = ($database->conn === null);
 $notifications = [];
 
-// HIER VANGEN WE DE FOUT OP ALS DE TABELNAAM IS VERANDERD IN PHPMYADMIN
 try {
     // Controleren of er een formulier (POST-request) wordt verstuurd
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
-        // ACTIE 1: Er is op de knop "Melding Versturen" gedrukt
+        // ACTIE 1: Nieuwe melding aanmaken (Vorige Sprint)
         if ($_POST['action'] === 'new_notification') {
             $title = trim($_POST['title']);
             $message = trim($_POST['message']);
             $type = 'Concept';
 
             if (!empty($title) && !empty($message)) {
-                // Als de database vooraf al stuk was, sturen we DIRECT door naar de error pagina
                 if ($systeemFout) {
                     header("Location: meldingen.php?error=db");
                     exit();
@@ -155,53 +146,64 @@ try {
 
                 try {
                     $success = $notificationManager->createNotification($title, $message, $type);
-
                     if ($success) {
                         header("Location: meldingen.php?success=1");
                         exit();
                     } else {
-                        // Als createNotification 'false' teruggeeft (omdat db null is)
                         header("Location: meldingen.php?error=db");
                         exit();
                     }
                 } catch (Exception $e) {
-                    // Als er tijdens het uitvoeren een database-fout komt (bijv. tabelnaam fout)
                     header("Location: meldingen.php?error=db");
                     exit();
                 }
             }
         }
 
-        // ACTIE USER STORY 9: Er is op de knop "Versturen" geklikt bij een concept
+        // ACTIE 2: Concept ECHT Versturen (User Story 9)
         if ($_POST['action'] === 'send_notification' && isset($_POST['id'])) {
             $sendId = intval($_POST['id']);
 
-            // Controleer op databasefout of falen van de query (Unhappy Scenario)
-            if ($systeemFout || $notificationManager->sendNotification($sendId, 'Info') === false) {
+            // Als de database onbereikbaar is, sturen we door met error send_failed
+            if ($systeemFout) {
                 header("Location: meldingen.php?error=send_failed");
                 exit();
             }
 
-            header("Location: meldingen.php?success=sent");
-            exit();
+            try {
+                $success = $notificationManager->sendNotification($sendId, 'Info');
+                if ($success === false) {
+                    header("Location: meldingen.php?error=send_failed");
+                    exit();
+                }
+                header("Location: meldingen.php?success=sent");
+                exit();
+            } catch (Exception $e) {
+                header("Location: meldingen.php?error=send_failed");
+                exit();
+            }
         }
 
-
-        // ACTIE 2: Er is op een prullenbak-knop gedrukt om te verwijderen
-        if ($_POST['action'] === 'delete_notification' && isset($_POST['id']) && !$systeemFout) {
+        // ACTIE 3: Verwijderen van een melding
+        if ($_POST['action'] === 'delete_notification' && isset($_POST['id'])) {
             $deleteId = intval($_POST['id']);
+
+            if ($systeemFout) {
+                header("Location: meldingen.php?error=db");
+                exit();
+            }
+
             $notificationManager->deleteNotification($deleteId);
-            header("Location: meldingen.php"); // Ook netjes redirecten na verwijderen!
+            header("Location: meldingen.php");
             exit();
         }
     }
 
-    // Als er geen database-fout is, halen we direct de nieuwste lijst met meldingen op
+    // Als er geen database-fout is, halen we de meldingen op
     if (!$systeemFout) {
         $notifications = $notificationManager->getAllNotifications();
     }
 } catch (PDOException $e) {
-    // Als phpMyAdmin zegt "Tabel bestaat niet", activeren we hier de systeemfout!
     $systeemFout = true;
 }
 ?>
@@ -468,6 +470,18 @@ try {
             <p>&copy; 2026 Aurora Theater. Alle rechten voorbehouden.</p>
         </div>
     </footer>
+
+    <script>
+        // Zodra de pagina is geladen, halen we de 'error' of 'success' parameter stilletjes weg uit de URL
+        if (window.history.replaceState) {
+            const url = new URL(window.location.href);
+            url.searchParams.delete('error');
+            url.searchParams.delete('success');
+            window.history.replaceState({
+                path: url.href
+            }, '', url.href);
+        }
+    </script>
 
     <script src="js/main.js"></script>
 </body>
