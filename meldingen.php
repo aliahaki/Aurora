@@ -262,6 +262,18 @@ try {
     <main class="notifications-container">
         <h1 style="text-align: center; margin-bottom: 40px; font-size: 48px;">Meldingen</h1>
 
+        <?php if (isset($_GET['error']) && $_GET['error'] === 'send_failed'): ?>
+            <div class="alert alert-danger">
+                De melding kon niet worden verstuurd omdat de database niet beschikbaar is. Probeer het later opnieuw.
+            </div>
+        <?php endif; ?>
+
+        <?php if (isset($_GET['success']) && $_GET['success'] === 'sent'): ?>
+            <div class="alert alert-success">
+                De melding is succesvol verstuurd en definitief gemaakt!
+            </div>
+        <?php endif; ?>
+
         <h2 style="font-size: 28px; margin-bottom: 25px; font-family: 'Playfair Display', serif; color: #6366f1;">Mijn Opgestelde Concepten</h2>
         <div style="margin-bottom: 40px;">
             <?php
