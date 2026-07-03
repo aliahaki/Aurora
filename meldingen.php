@@ -95,6 +95,10 @@ class NotificationManager
             return false;
         }
 
+        $query = "UPDATE notifications 
+                  SET type = :type 
+                  WHERE id = :id";
+
 
     // FUNCTIE: Verwijder een melding uit de database met het ID
     public function deleteNotification(int $id): bool
