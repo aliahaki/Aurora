@@ -99,12 +99,12 @@ class NotificationManager
                   SET type = :type 
                   WHERE id = :id";
 
-        $stmt = $this->db->prepare($query);  
+        $stmt = $this->db->prepare($query);
         return $stmt->execute([
             ':type' => $newType,
             ':id' => $id
         ]);
-    }        
+    }
 
     // FUNCTIE: Verwijder een melding uit de database met het ID
     public function deleteNotification(int $id): bool
@@ -170,6 +170,20 @@ try {
                     exit();
                 }
             }
+        }
+
+        // ACTIE USER STORY 9: Er is op de knop "Versturen" geklikt bij een concept
+        if ($_POST['action'] === 'send_notification' && isset($_POST['id'])) {
+            $sendId = intval($_POST['id']);
+
+            // Controleer op databasefout of falen van de query (Unhappy Scenario)
+            if ($systeemFout || $notificationManager->sendNotification($sendId, 'Info') === false) {
+                header("Location: meldingen.php?error=send_failed");
+                exit();
+            }
+
+            header("Location: meldingen.php?success=sent");
+            exit();
         }
 
 
