@@ -10,7 +10,7 @@ class Database
     private string $dbname = 'aurora_theater';
     private string $username = 'root';
     private string $password = '';
-    public ?PDO $conn = null;
+    public ?PDO $conn = null; // Hierin slaan we de actieve verbinding op
 
     public function __construct()
     {
@@ -116,17 +116,70 @@ class NotificationManager
             ':id' => $id
         ]);
     }
+
+    // ==========================================================================
+    // HIER STUURDEN WE DE FEEDBACK FUNCTIES HEEN BINNEN DE KLASSE!
+    // ==========================================================================
+
+    // FUNCTIE: Sla ontvangen feedback op in de MySQL database
+    public function createFeedback(string $name, string $message): bool
+    {
+        if ($this->db === null) {
+            return false;
+        }
+
+        $query = "INSERT INTO feedback (name, message, created_at) 
+                  VALUES (:name, :message, NOW())";
+
+        $stmt = $this->db->prepare($query);
+        return $stmt->execute([
+            ':name' => $name,
+            ':message' => $message
+        ]);
+    }
+
+    // FUNCTIE: Haal alle ingezonden feedback op (Nieuwste eerst)
+    public function getAllFeedback(): array
+    {
+        if ($this->db === null) {
+            return [];
+        }
+
+        $query = "SELECT id, name, message, created_at 
+                  FROM feedback 
+                  ORDER BY created_at DESC";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 // ==========================================================================
 // 3. APPLICATIE LOGICA (HET WERKBOEK VAN PHP)
-// Hier verwerken we de formulieren als er op een knop wordt gedrukt.
+// Hier verwerken we alle formulieren (Meldingen én Feedback).
 // ==========================================================================
-$database = new Database();
-$notificationManager = new NotificationManager($database->conn);
-
-$systeemFout = ($database->conn === null);
+$systeemFout = false;
+$feedbackFout = false; // Nieuwe variabele voor feedback-fouten
 $notifications = [];
+$feedbackLijst = [];
+
+try {
+    // DIRECTE VERBINDING (VEILIGHEIDS-CHECK): We verbinden rechtstreeks met aurora_theater
+    $directDb = new PDO("mysql:host=localhost;dbname=aurora_theater;charset=utf8", "root", "");
+    $directDb->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // We maken de manager aan met deze directe, werkende verbinding
+    $notificationManager = new NotificationManager($directDb);
+} catch (Exception $e) {
+    // Mocht dit toch falen, val dan terug op je oude Database-klasse
+    try {
+        $database = new Database();
+        $notificationManager = new NotificationManager($database->conn);
+        $systeemFout = ($database->conn === null);
+    } catch (Exception $ex) {
+        $systeemFout = true;
+    }
+}
 
 try {
     // Controleren of er een formulier (POST-request) wordt verstuurd
@@ -143,49 +196,56 @@ try {
                     header("Location: meldingen.php?error=db");
                     exit();
                 }
-
-                try {
-                    $success = $notificationManager->createNotification($title, $message, $type);
-                    if ($success) {
-                        header("Location: meldingen.php?success=1");
-                        exit();
-                    } else {
-                        header("Location: meldingen.php?error=db");
-                        exit();
-                    }
-                } catch (Exception $e) {
-                    header("Location: meldingen.php?error=db");
+                $success = $notificationManager->createNotification($title, $message, $type);
+                if ($success) {
+                    header("Location: meldingen.php?success=1");
+                    exit();
+                } else {
+                    header("Location: School_Project/Aurora/meldingen.php?error=db");
                     exit();
                 }
             }
         }
 
-        // ACTIE 2: Concept ECHT Versturen (User Story 9)
-        if ($_POST['action'] === 'send_notification' && isset($_POST['id'])) {
-            $sendId = intval($_POST['id']);
+        // ACTIE: Bestaand concept definitief versturen (Nieuws van maken)
+        if ($_POST['action'] === 'send_existing_concept' && isset($_POST['id'])) {
 
-            // Als de database onbereikbaar is, sturen we door met error send_failed
-            if ($systeemFout) {
-                header("Location: meldingen.php?error=send_failed");
+            // Check of de database al als fout is gemarkeerd bij Stap 3
+            if (isset($systeemFout) && $systeemFout === true) {
+                header("Location: meldingen.php?error=db_versturen_failed");
                 exit();
             }
 
             try {
-                $success = $notificationManager->sendNotification($sendId, 'Info');
-                if ($success === false) {
-                    header("Location: meldingen.php?error=send_failed");
+                // We halen de database-verbinding rechtstreeks uit de al bestaande manager!
+                // Mocht $notificationManager niet werken, gebruiken we $directDb die bij stap 3 is gemaakt.
+                $dbVerbinding = $directDb;
+
+                if (!$dbVerbinding) {
+                    header("Location: meldingen.php?error=db_versturen_failed");
                     exit();
                 }
-                header("Location: meldingen.php?success=sent");
-                exit();
+
+                $conceptId = intval($_POST['id']);
+                $query = "UPDATE notifications SET type = 'Nieuws', created_at = NOW() WHERE id = :id";
+
+                $stmt = $dbVerbinding->prepare($query);
+                $success = $stmt->execute([':id' => $conceptId]);
+
+                if ($success) {
+                    header("Location: meldingen.php?success=verstuurd");
+                    exit();
+                } else {
+                    header("Location: meldingen.php?error=db_versturen_failed");
+                    exit();
+                }
             } catch (Exception $e) {
-                header("Location: meldingen.php?error=send_failed");
+                header("Location: meldingen.php?error=db_versturen_failed");
                 exit();
             }
         }
-
-        // ACTIE 3: Verwijderen van een melding
-        if ($_POST['action'] === 'delete_notification' && isset($_POST['id'])) {
+        // ACTIE 2: Melding verwijderen
+        if ($_POST['action'] === 'delete_notification' && isset($_POST['id']) && !$systeemFout) {
             $deleteId = intval($_POST['id']);
 
             if ($systeemFout) {
@@ -197,13 +257,54 @@ try {
             header("Location: meldingen.php");
             exit();
         }
+
+        // ACTIE 3: ER WORDT FEEDBACK INGESTUURD!
+        if ($_POST['action'] === 'submit_feedback') {
+            if ($systeemFout) {
+                header("Location: meldingen.php?error=feedback_db_error#ingezonden-feedback");
+                exit();
+            }
+
+            $name = !empty($_POST['name']) ? trim($_POST['name']) : 'Anoniem';
+            $message = !empty($_POST['message']) ? trim($_POST['message']) : '';
+
+            if (!empty($message)) {
+                try {
+                    $success = $notificationManager->createFeedback($name, $message);
+
+                    if ($success) {
+                        header("Location: meldingen.php?success=feedback_saved#ingezonden-feedback");
+                        exit();
+                    } else {
+                        header("Location: meldingen.php?error=feedback_db_error#ingezonden-feedback");
+                        exit();
+                    }
+                } catch (Exception $e) {
+                    header("Location: meldingen.php?error=feedback_db_error#ingezonden-feedback");
+                    exit();
+                }
+            }
+        }
     }
 
-    // Als er geen database-fout is, halen we de meldingen op
+    // Gegevens ophalen voor de overzichten
     if (!$systeemFout) {
-        $notifications = $notificationManager->getAllNotifications();
+        // Probeer eerst de meldingen op te halen
+        try {
+            $notifications = $notificationManager->getAllNotifications();
+        } catch (Exception $ne) {
+            // Fout bij meldingen tabel opvangen
+        }
+
+        // Probeer apart de feedback op te halen (zodat een crash hier niet de meldingen blokkeert!)
+        try {
+            $feedbackLijst = $notificationManager->getAllFeedback();
+        } catch (Exception $fe) {
+            // HIER GAAT HET MIS ALS DE TABEL HERNOEMD IS!
+            $feedbackFout = true;
+        }
     }
-} catch (PDOException $e) {
+} catch (Exception $e) {
     $systeemFout = true;
 }
 ?>
@@ -264,17 +365,20 @@ try {
     <main class="notifications-container">
         <h1 style="text-align: center; margin-bottom: 40px; font-size: 48px;">Meldingen</h1>
 
-        <?php if (isset($_GET['error']) && $_GET['error'] === 'send_failed'): ?>
-            <div class="alert alert-danger">
+        <?php if (isset($_GET['error']) && $_GET['error'] === 'db_versturen_failed'): ?>
+            <div style="background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; padding: 16px 24px; border-radius: 12px; margin-bottom: 25px; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-triangle-exclamation"></i>
                 De melding kon niet worden verstuurd omdat de database niet beschikbaar is. Probeer het later opnieuw.
             </div>
         <?php endif; ?>
 
-        <?php if (isset($_GET['success']) && $_GET['success'] === 'sent'): ?>
-            <div class="alert alert-success">
-                De melding is succesvol verstuurd en definitief gemaakt!
+        <?php if (isset($_GET['success']) && $_GET['success'] === 'verstuurd'): ?>
+            <div id="success-alert" style="background-color: #dcfce7; color: #166534; border: 1px solid #86efac; padding: 16px 24px; border-radius: 12px; margin-bottom: 25px; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 10px; opacity: 1; transition: opacity 0.5s ease;">
+                <i class="fa-solid fa-circle-check"></i>
+                De melding is succesvol verstuurd naar de bezoekers.
             </div>
         <?php endif; ?>
+
 
         <h2 style="font-size: 28px; margin-bottom: 25px; font-family: 'Playfair Display', serif; color: #6366f1;">Mijn Opgestelde Concepten</h2>
         <div style="margin-bottom: 40px;">
@@ -284,36 +388,48 @@ try {
                 foreach ($notifications as $notif):
                     if ($notif['type'] === 'Concept'):
                         $heeftConcepten = true;
+
+                        // Vaste Figma testdatum of database datum
+                        $conceptDatum = '5 juli 2026';
+                        if (isset($notif['created_at'])) {
+                            $timestamp = strtotime($notif['created_at']);
+                            $maanden = ['January' => 'januari', 'February' => 'februari', 'March' => 'maart', 'April' => 'april', 'May' => 'mei', 'June' => 'juni', 'July' => 'juli', 'August' => 'augustus', 'September' => 'september', 'October' => 'oktober', 'November' => 'november', 'December' => 'december'];
+                            $engelseMaand = date('F', $timestamp);
+                            $conceptDatum = date('j ', $timestamp) . $maanden[$engelseMaand] . date(' Y', $timestamp);
+                        }
             ?>
-                        <div class="card-notification concept-item" style="border: 1px dashed #b4b6f9; margin-bottom: 25px; background: #fff; padding: 24px; border-radius: 12px; position: relative;">
-                            <div class="card-body-content" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <div style="border: 1px dashed #c7d2fe; border-radius: 16px; padding: 24px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; background-color: #ffffff; font-family: 'Poppins', sans-serif;">
 
-                                <div style="display: flex; flex-direction: column; gap: 6px;">
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <span class="badge" style="background-color: #eef2ff; color: #6366f1; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; font-family: 'Poppins', sans-serif;">Nog niet verzonden</span>
-                                        <span style="font-size: 13px; color: #94a3b8; font-family: 'Poppins', sans-serif;">22 juni 2026</span>
-                                    </div>
-
-                                    <h3 style="font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 18px; margin: 4px 0 0 0; color: #1e293b;"><?php echo htmlspecialchars($notif['title']); ?></h3>
-
-                                    <p class="card-message" style="margin: 2px 0 0 0; color: #64748b; font-size: 14px; font-family: 'Poppins', sans-serif;"><?php echo htmlspecialchars($notif['message']); ?></p>
+                            <div style="display: flex; flex-direction: column; gap: 12px; flex-grow: 1;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <span style="background-color: #eedffc; color: #6366f1; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600;">Nog niet verzonden</span>
+                                    <span style="font-size: 13px; color: #94a3b8;"><?php echo $conceptDatum; ?></span>
                                 </div>
 
-                                <div style="display: flex; align-items: center; gap: 12px; flex-shrink: 0;">
-                                    <form action="meldingen.php" method="POST" style="margin: 0;">
-                                        <input type="hidden" name="action" value="send_notification">
-                                        <input type="hidden" name="id" value="<?php echo $notif['id']; ?>">
-                                        <button type="submit" style="background-color: #6366f1; color: white; border: none; padding: 10px 24px; border-radius: 24px; font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 14px; cursor: pointer; transition: background 0.2s; shadow: 0 2px 4px rgba(99, 102, 241, 0.2);">Versturen</button>
-                                    </form>
-
-                                    <form action="meldingen.php" method="POST" onsubmit="return confirm('Weet je zeker dat je dit concept wilt verwijderen?');" style="margin: 0;">
-                                        <input type="hidden" name="action" value="delete_notification">
-                                        <input type="hidden" name="id" value="<?php echo $notif['id']; ?>">
-                                        <button type="submit" style="background-color: white; color: #64748b; border: 1px solid #e2e8f0; padding: 10px 24px; border-radius: 24px; font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 14px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#cbd5e1'; this.style.color='#334155';" onmouseout="this.style.borderColor='#e2e8f0'; this.style.color='#64748b';">Verwijderen</button>
-                                    </form>
+                                <div style="margin-top: 4px;">
+                                    <h3 style="font-weight: 700; font-size: 18px; margin: 0; color: #1e293b;"><?php echo htmlspecialchars($notif['title']); ?></h3>
+                                    <p style="margin: 6px 0 0 0; color: #64748b; font-size: 14px;"><?php echo htmlspecialchars($notif['message']); ?></p>
                                 </div>
-
                             </div>
+
+                            <div style="display: flex; align-items: center; gap: 12px; flex-shrink: 0; margin-left: 20px;">
+                                <form action="meldingen.php" method="POST" style="margin: 0;">
+                                    <input type="hidden" name="action" value="send_existing_concept">
+                                    <input type="hidden" name="id" value="<?php echo $notif['id']; ?>">
+                                    <button type="submit" style="background-color: #6366f1; color: white; border: none; padding: 10px 24px; border-radius: 30px; font-weight: 600; cursor: pointer; font-size: 14px; font-family: 'Poppins', sans-serif; transition: background 0.2s; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);">
+                                        Versturen
+                                    </button>
+                                </form>
+
+                                <form action="meldingen.php" method="POST" onsubmit="return confirm('Weet je zeker dat je dit concept wilt verwijderen?');" style="margin: 0;">
+                                    <input type="hidden" name="action" value="delete_notification">
+                                    <input type="hidden" name="id" value="<?php echo $notif['id']; ?>">
+                                    <button type="submit" style="background-color: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; padding: 10px 24px; border-radius: 30px; font-weight: 600; cursor: pointer; font-size: 14px; font-family: 'Poppins', sans-serif; transition: all 0.2s;">
+                                        Verwijderen
+                                    </button>
+                                </form>
+                            </div>
+
                         </div>
                 <?php
                     endif;
@@ -434,20 +550,87 @@ try {
             </form>
         </div>
 
-        <div class="form-card">
-            <h2 style="margin-bottom: 10px;">Feedback</h2>
-            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
-                We waarderen uw feedback! Laat ons weten wat u van onze service vindt.
-            </p>
-            <form action="#" method="POST">
-                <div class="form-group">
-                    <textarea rows="4" placeholder="Deel uw feedback met ons..." required></textarea>
+        <div class="feedback-card">
+            <h2>Feedback</h2>
+            <p>We waarderen uw feedback! Laat ons weten wat u van onze service vindt.</p>
+            <?php if (isset($_GET['success']) && $_GET['success'] === 'feedback_saved'): ?>
+                <div id="feedback-success-alert" style="background-color: #dcfce7; color: #166534; border: 1px solid #86efac; padding: 16px 24px; border-radius: 12px; margin-bottom: 25px; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 10px; opacity: 1; transition: opacity 0.5s ease;">
+                    <i class="fa-solid fa-circle-check"></i>
+                    Je feedback is succesvol verzonden! Bedankt voor je bericht.
                 </div>
-                <button type="submit" class="btn-submit-dark">Feedback Verzenden</button>
-            </form>
-        </div>
-    </main>
+            <?php endif; ?>
 
+            <?php if (isset($_GET['error']) && $_GET['error'] === 'feedback_db_error'): ?>
+                <?php if (!$systeemFout): ?>
+                    <script>
+                        window.location.href = 'meldingen.php#ingezonden-feedback';
+                    </script>
+                    <?php exit(); ?>
+                <?php endif; ?>
+                <?php if ((isset($feedbackFout) && $feedbackFout) || $systeemFout || (isset($_GET['error']) && $_GET['error'] === 'feedback_db_error')): ?>
+                    <div style="background-color: #ffeeef; color: #af233a; border: 1px solid #fed7da; padding: 16px 24px; border-radius: 12px; margin-bottom: 25px; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500;">
+                        De database is momenteel niet bereikbaar. Uw feedback kon niet worden verwerkt. Probeer het later opnieuw.
+                    </div>
+
+                <?php endif; ?>
+            <?php endif; ?>
+
+            <div class="tab-buttons">
+                <button type="button" id="tab-versturen" class="btn-tab active">
+                    <i class="fas fa-paper-plane"></i> Feedback Versturen
+                </button>
+                <button type="button" id="tab-ontvangen" class="btn-tab">
+                    <i class="fas fa-inbox"></i> Ontvangen Feedback
+                    <span class="badge"><?php echo count($feedbackLijst); ?></span>
+                </button>
+            </div>
+
+            <div id="feedback-form-container" class="tab-content">
+                <form action="meldingen.php" method="POST">
+                    <input type="hidden" name="action" value="submit_feedback">
+
+                    <div class="form-group">
+                        <label for="name">Naam (optioneel)</label>
+                        <input type="text" id="name" name="name" placeholder="Uw naam of anoniem laten">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Bericht</label>
+                        <textarea id="message" name="message" placeholder="Deel uw feedback met ons..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Feedback Verzenden</button>
+                </form>
+            </div>
+
+            <div id="feedback-lijst-container" class="tab-content hidden">
+                <?php if (empty($feedbackLijst)): ?>
+                    <p class="empty-text">Er is momenteel nog geen feedback ontvangen.</p>
+                <?php else: ?>
+                    <div class="feedback-grid">
+                        <?php foreach ($feedbackLijst as $fb): ?>
+                            <div class="feedback-item">
+                                <div class="feedback-avatar">
+                                    <?php echo strtoupper(substr(htmlspecialchars($fb['name']), 0, 1)); ?>
+                                </div>
+                                <div class="feedback-body">
+                                    <div class="feedback-header">
+                                        <strong><?php echo htmlspecialchars($fb['name']); ?></strong>
+                                        <div class="feedback-date" style="color: #9ca3af; font-size: 13px;">
+                                            <?php
+                                            // We gebruiken $fb['created_at'] omdat jouw variabele $fb heet!
+                                            $date = new DateTime($fb['created_at']);
+                                            $maanden = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+                                            echo $date->format('j ') . $maanden[$date->format('n') - 1] . $date->format(' Y');
+                                            ?>
+                                        </div>
+                                    </div>
+                                    <p><?php echo nl2br(htmlspecialchars($fb['message'])); ?></p>
+                                </div>
+                            </div> <?php endforeach; ?>
+                    </div> <?php endif; ?>
+            </div>
+    </main>
     <footer class="main-footer">
         <div class="footer-container">
             <div class="footer-brand">
@@ -484,6 +667,50 @@ try {
     </script>
 
     <script src="js/main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Zoek de succesbalk op via de juiste ID
+            const alertBox = document.getElementById("success-alert");
+
+            if (alertBox) {
+                // Wacht 3 seconden (3000 milliseconden)
+                setTimeout(function() {
+                    // Maak de balk onzichtbaar (vervaag-effect)
+                    alertBox.style.opacity = "0";
+
+                    // Wacht nog 500ms totdat de animatie klaar is, en haal hem dan helemaal weg
+                    setTimeout(function() {
+                        alertBox.style.display = "none";
+                    }, 500);
+                }, 3000);
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. Check voor de melding van versturen meldingen
+            const alertBox = document.getElementById("success-alert");
+            if (alertBox) {
+                setTimeout(function() {
+                    alertBox.style.opacity = "0";
+                    setTimeout(function() {
+                        alertBox.style.display = "none";
+                    }, 500);
+                }, 3000);
+            }
+
+            // 2. Check voor de nieuwe feedback succesbalk
+            const feedbackAlertBox = document.getElementById("feedback-success-alert");
+            if (feedbackAlertBox) {
+                setTimeout(function() {
+                    feedbackAlertBox.style.opacity = "0";
+                    setTimeout(function() {
+                        feedbackAlertBox.style.display = "none";
+                    }, 500);
+                }, 3000);
+            }
+        });
+    </script>
 </body>
 
 </html>
