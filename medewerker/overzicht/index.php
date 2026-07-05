@@ -311,32 +311,58 @@ if ($db_beschikbaar) {
     <?php endif; ?>
 </div>
 <!-- Footer -->
-        <footer class="main-footer">
+        <footer class="footer">
+
     <div class="footer-container">
-        <div class="footer-brand">
-            <h3><span class="logo-icon">★</span> Aurora Theater</h3>
-            <p>Het thuis van de mooiste cultuur- en muziekvoorstellingen.</p>
+
+        <div class="footer-column">
+
+            <div class="footer-logo">
+
+                <span class="logo-circle">★</span>
+
+                <h3>Aurora Theater</h3>
+
+            </div>
+
+            <p>
+                Het thuis van de mooiste cultuur-
+                en muziekvoorstellingen.
+            </p>
+
         </div>
 
-        <div class="footer-contact">
-            <h4>Contact & Adres</h4>
+        <div class="footer-column">
+
+            <h3>Contact & Adres</h3>
+
             <p>📍 Theaterplein 1, 1011 VX Amsterdam</p>
+
             <p>📞 020 - 123 4567</p>
+
             <p>✉️ info@auroratheater.nl</p>
+
         </div>
 
-        <div class="footer-hours">
-            <h4>Openingstijden Kassa</h4>
+        <div class="footer-column">
+
+            <h3>Openingstijden Kassa</h3>
+
             <p>Maandag - Vrijdag: 14:00 - 22:00</p>
+
             <p>Zaterdag & Zondag: 12:00 - 23:00</p>
+
         </div>
+
     </div>
 
     <div class="footer-bottom">
-        <p>&copy; 2026 Aurora Theater. Alle rechten voorbehouden.</p>
-    </div>
-</footer>
 
+        © 2026 Aurora Theater. Alle rechten voorbehouden.
+
+    </div>
+
+</footer>
 
 <!-- Modal Nieuwe Medewerker -->
 <div id="employeeModal" class="modal">
